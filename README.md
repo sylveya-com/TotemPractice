@@ -73,7 +73,7 @@ Optional:
 
 ## » Build
 
-```bash id="v2n8fb"
+```bash 
 gradlew build
 ```
 
