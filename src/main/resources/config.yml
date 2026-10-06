@@ -1,0 +1,20 @@
+# TotemPractice Configuration
+
+# Seconds between lethal hits and the score multiplier for each difficulty.
+difficulties:
+  easy:
+    hit-interval: 2.0
+    score-multiplier: 1.0
+  normal:
+    hit-interval: 1.0
+    score-multiplier: 2.0
+  hard:
+    hit-interval: 0.5
+    score-multiplier: 3.0
+  impossible:
+    hit-interval: 0.25
+    score-multiplier: 5.0
+
+hide:
+  # Hide players in a round from the tab list of everyone else (requires PacketEvents installed)
+  match-players-in-tab: false

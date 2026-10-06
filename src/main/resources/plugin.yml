@@ -1,0 +1,21 @@
+name: TotemPractice
+version: '${version}'
+main: dev.lokspel.totempractice.TotemPractice
+api-version: '1.21'
+author: lokspel
+description: Totem survival training with a difficulty selection GUI.
+softdepend: [PlaceholderAPI, packetevents]
+
+commands:
+  totempractice:
+    description: Open the difficulty selection GUI
+    usage: /totempractice
+    permission: totempractice.use
+
+permissions:
+  totempractice.use:
+    description: Allows using the TotemPractice command
+    default: true
+  totempractice.set:
+    description: Allows setting teleport points
+    default: op

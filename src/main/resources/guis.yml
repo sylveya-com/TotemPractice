@@ -1,0 +1,43 @@
+# Difficulty selection GUI. Placeholders: %interval% (seconds between lethal hits), %multiplier% (score multiplier)
+difficulty-selection:
+  title: "<white><bold>Choose difficulty"
+  size: 27
+  fill-material: gray_stained_glass_pane
+  slots:
+      # Lethal hit every: %interval%s | Score multiplier: x%multiplier%
+    easy:
+      slot: 10
+      material: green_stained_glass_pane
+      name: "<green><bold>Easy"
+      glint: false
+      lore:
+        - "<gray>Lethal hit every: <white>%interval%s"
+        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>(<white>Click to start"
+    normal:
+      slot: 12
+      material: yellow_stained_glass_pane
+      name: "<yellow><bold>Normal"
+      glint: false
+      lore:
+        - "<gray>Lethal hit every: <white>%interval%s"
+        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>(<white>Click to start"
+    hard:
+      slot: 14
+      material: orange_stained_glass_pane
+      name: "<gold><bold>Hard"
+      glint: false
+      lore:
+        - "<gray>Lethal hit every: <white>%interval%s"
+        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>(<white>Click to start"
+    impossible:
+      slot: 16
+      material: red_stained_glass_pane
+      name: "<red><bold>Impossible"
+      glint: false
+      lore:
+        - "<gray>Lethal hit every: <white>%interval%s"
+        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>(<white>Click to start"
