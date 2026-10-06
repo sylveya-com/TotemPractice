@@ -20,6 +20,8 @@ import dev.lokspel.totempractice.util.SoftDependUtil;
 import dev.lokspel.totempractice.util.entityhider.PlayerHider;
 import dev.lokspel.totempractice.util.placeholderapi.PlayerExpansion;
 import com.github.retrooper.packetevents.PacketEvents;
+import dev.faststats.Metrics;
+import dev.faststats.bukkit.BukkitContext;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +38,10 @@ public final class TotemPractice extends JavaPlugin {
     private MainConfig mainConfig;
     private Rounds rounds;
     private PlayerHider playerHider;
+
+    private final BukkitContext fastStatsContext = new BukkitContext.Factory(this, "7a66e6383b0e054e6a12749a58fb28f8")
+            .metrics(Metrics.Factory::create)
+            .create();
 
     @Override
     public void onLoad() {
@@ -84,10 +90,13 @@ public final class TotemPractice extends JavaPlugin {
             new PlayerExpansion(this, "totempractice").register();
             new PlayerExpansion(this, "tp").register();
         }
+
+        fastStatsContext.ready();
     }
 
     @Override
     public void onDisable() {
+        fastStatsContext.shutdown();
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().terminate();
         }

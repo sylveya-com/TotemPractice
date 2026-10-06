@@ -11,6 +11,7 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.helpch.at/releases/")
+    maven("https://repo.faststats.dev/releases")
 }
 
 dependencies {
@@ -18,6 +19,7 @@ dependencies {
     implementation("net.kyori:adventure-api:5.2.0")
     implementation("net.kyori:adventure-text-serializer-legacy:5.2.0")
     implementation("net.kyori:adventure-text-minimessage:5.2.0")
+    implementation("dev.faststats.metrics:bukkit:0.30.2")
     compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
     compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("org.projectlombok:lombok:1.18.42")
