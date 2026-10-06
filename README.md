@@ -64,13 +64,11 @@ The expansion is available under both `totempractice` and `tp`.
 
 ## » Requirements
 
-* **Java 21**
-* **Paper 1.21.4** or compatible forks
-
-Optional:
-
-* **PacketEvents** — tab-list hiding
-* **PlaceholderAPI** — placeholders
+- **Java 25**
+- **Spigot, Paper**
+- **Minecraft `1.21.11`, `26.1`, or `26.2`**
+- Optional: [PacketEvents](https://github.com/retrooper/packetevents) for match player tab-list hiding
+- Optional: [PlaceholderAPI](https://placeholderapi.com) for placeholders
 
 ## » Build
 
