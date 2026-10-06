@@ -36,11 +36,11 @@ When the round ends, the final score is displayed in a title.
 
 ## » Commands
 
-| Command                      | Aliases           | Description                       | Permission          |
-| ---------------------------- | ----------------- | --------------------------------- | ------------------- |
-| `/totempractice`             | `/tp`             | Open the difficulty selection GUI | `totempractice.use` |
-| `/totempractice set match`   | `/tp set match`   | Set the match location            | `totempractice.set` |
-| `/totempractice set lobby`   | `/tp set lobby`   | Set the lobby respawn location    | `totempractice.set` |
+| Command                    | Description                       | Permission          |
+| -------------------------- | --------------------------------- | ------------------- |
+| `/totempractice`           | Open the difficulty selection GUI | `totempractice.use` |
+| `/totempractice set match` | Set the match location            | `totempractice.set` |
+| `/totempractice set lobby` | Set the lobby respawn location    | `totempractice.set` |
 
 ## » Tab List Hiding
 
