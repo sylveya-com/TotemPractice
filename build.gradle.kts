@@ -16,11 +16,11 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-api:5.2.0")
-    implementation("net.kyori:adventure-text-serializer-legacy:5.2.0")
-    implementation("net.kyori:adventure-text-minimessage:5.2.0")
+    implementation("net.kyori:adventure-api:4.25.0")
+    implementation("net.kyori:adventure-text-serializer-legacy:4.25.0")
+    implementation("net.kyori:adventure-text-minimessage:4.25.0")
     implementation("dev.faststats.metrics:bukkit:0.30.2")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
     compileOnly("me.clip:placeholderapi:2.12.3")
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")

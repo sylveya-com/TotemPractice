@@ -5,7 +5,10 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundEndEvent;
@@ -19,23 +22,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Keeps entity, sound and tab-list visibility consistent with round membership.
- *
- * <p>A player inside a round is visible only to the other members of that same
- * round; everyone else sees them hidden. When
- * {@code hide.match-players-from-each-other} is disabled, players in different
- * rounds can see each other. When {@code hide.match-players-in-tab} is enabled
- * the hidden player is also removed from the observer's tab list.</p>
- */
 public class PlayerHider implements Listener {
 
     private final TotemPractice plugin;
@@ -98,6 +94,26 @@ public class PlayerHider implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent event) {
+        if (!SoftDependUtil.PACKET_EVENTS_ENABLED) {
+            return;
+        }
+
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        WrapperPlayServerPlayerInfoRemove packet =
+                new WrapperPlayServerPlayerInfoRemove(uuid);
+
+        for (Player viewer : Bukkit.getOnlinePlayers()) {
+            if (viewer.getUniqueId().equals(uuid)) {
+                continue;
+            }
+
+            PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, packet);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(PlayerTeleportEvent event) {
         if (event.getTo() == null) {
             return;
@@ -118,10 +134,6 @@ public class PlayerHider implements Listener {
         refreshLater();
     }
 
-    /**
-     * Recomputes the visibility of every online player from scratch, based on
-     * their current round membership.
-     */
     public void refreshVisibility() {
         List<Player> online = List.copyOf(Bukkit.getOnlinePlayers());
 
@@ -139,15 +151,18 @@ public class PlayerHider implements Listener {
                     continue;
                 }
 
-                if (isVisibleTo(viewerRound, target)) {
+                boolean visible = isVisibleTo(viewerRound, target);
+
+                if (visible) {
                     showPlayer(viewer, target);
-                    setListed(viewer, target, true);
                 } else {
                     hidePlayer(viewer, target);
+                }
 
-                    if (hide.matchPlayersInTab()) {
-                        setListed(viewer, target, false);
-                    }
+                if (hide.matchPlayersInTab()) {
+                    setListed(viewer, target, visible);
+                } else {
+                    addToTab(viewer, target);
                 }
             }
         }
@@ -207,6 +222,47 @@ public class PlayerHider implements Listener {
                         info
                 );
 
-        PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, update);
+        PacketEvents.getAPI()
+                .getPlayerManager()
+                .sendPacket(viewer, update);
+    }
+
+    private void addToTab(Player viewer, Player target) {
+        if (!SoftDependUtil.PACKET_EVENTS_ENABLED) {
+            return;
+        }
+
+        if (!viewer.isOnline() || !target.isOnline()) {
+            return;
+        }
+
+        EnumSet<WrapperPlayServerPlayerInfoUpdate.Action> actions = EnumSet.of(
+                WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED,
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LATENCY,
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,
+                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LIST_ORDER
+        );
+
+        WrapperPlayServerPlayerInfoUpdate.PlayerInfo info =
+                new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
+                        new UserProfile(
+                                target.getUniqueId(),
+                                target.getName()
+                        ),
+                        true,
+                        target.getPing(),
+                        GameMode.valueOf(target.getGameMode().name()),
+                        null,
+                        null,
+                        target.getPlayerListOrder()
+                );
+
+        WrapperPlayServerPlayerInfoUpdate packet =
+                new WrapperPlayServerPlayerInfoUpdate(actions, info);
+
+        PacketEvents.getAPI()
+                .getPlayerManager()
+                .sendPacket(viewer, packet);
     }
 }
