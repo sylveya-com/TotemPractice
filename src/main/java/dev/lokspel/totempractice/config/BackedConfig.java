@@ -47,13 +47,19 @@ public final class BackedConfig {
     }
 
     public void setLocation(String name, Location location) {
+        World world = location.getWorld();
+        if (world == null) {
+            return;
+        }
+
         String path = name + ".";
-        config.set(path + "world", location.getWorld().getName());
+        config.set(path + "world", world.getName());
         config.set(path + "x", location.getX());
         config.set(path + "y", location.getY());
         config.set(path + "z", location.getZ());
         config.set(path + "yaw", location.getYaw());
         config.set(path + "pitch", location.getPitch());
+
         try {
             config.save(file);
         } catch (IOException e) {

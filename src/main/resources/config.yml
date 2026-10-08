@@ -18,3 +18,5 @@ difficulties:
 hide:
   # Hide players in a round from the tab list of everyone else (requires PacketEvents installed)
   match-players-in-tab: false
+  # Hide players in a round from each other? (requires PacketEvents installed)
+  match-players-from-each-other: true

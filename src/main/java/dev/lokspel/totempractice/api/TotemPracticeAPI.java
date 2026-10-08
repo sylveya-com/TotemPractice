@@ -1,6 +1,7 @@
 package dev.lokspel.totempractice.api;
 
 import dev.lokspel.totempractice.TotemPractice;
+import dev.lokspel.totempractice.config.MainConfig;
 import dev.lokspel.totempractice.game.Round;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -16,6 +17,10 @@ public class TotemPracticeAPI {
     public TotemPracticeAPI(TotemPractice plugin) {
         this.plugin = plugin;
         instance = this;
+    }
+
+    public MainConfig getMainConfig() {
+        return plugin.getMainConfig();
     }
 
     /**

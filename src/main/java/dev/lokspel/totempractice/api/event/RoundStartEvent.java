@@ -17,6 +17,10 @@ public class RoundStartEvent extends Event {
         this.player = player;
     }
 
+    public static @NotNull HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;

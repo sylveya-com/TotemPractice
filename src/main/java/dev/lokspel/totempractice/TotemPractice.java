@@ -60,9 +60,11 @@ public final class TotemPractice extends JavaPlugin {
         mainConfig = new MainConfig(this);
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().init();
-            playerHider = new PlayerHider(this);
         }
         rounds = new Rounds(this);
+
+        playerHider = new PlayerHider(this);
+        getServer().getPluginManager().registerEvents(playerHider, this);
 
         new DifficultyGui(rounds, mainConfig.difficulties(), new GuiConfig(this));
 

@@ -42,6 +42,12 @@ When the round ends, the final score is displayed in a title.
 | `/totempractice set match` | Set the match location            | `totempractice.set` |
 | `/totempractice set lobby` | Set the lobby respawn location    | `totempractice.set` |
 
+## » Player Hiding
+
+Players in a round are hidden from everyone outside the round and vice versa (this part works without PacketEvents).
+
+With `hide.match-players-from-each-other` enabled (default), players practising at the same time also cannot see each other. Disable it to let them see each other.
+
 ## » Tab List Hiding
 
 When `hide.match-players-in-tab` is enabled and PacketEvents is installed, players currently in a round are hidden from the tab list of players outside that round.

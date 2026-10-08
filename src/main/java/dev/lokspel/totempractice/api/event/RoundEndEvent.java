@@ -20,6 +20,10 @@ public class RoundEndEvent extends Event {
         this.round = round;
     }
 
+    public static @NotNull HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;

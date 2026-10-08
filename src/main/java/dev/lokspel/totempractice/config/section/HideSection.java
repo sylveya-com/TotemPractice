@@ -20,4 +20,8 @@ public class HideSection {
     public boolean matchPlayersInTab() {
         return config().getBoolean(PATH + "match-players-in-tab", false);
     }
+
+    public boolean matchPlayersFromEachOther() {
+        return config().getBoolean(PATH + "match-players-from-each-other", true);
+    }
 }
