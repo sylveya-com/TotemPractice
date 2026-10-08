@@ -69,7 +69,6 @@ The expansion is available under both `totempractice` and `tp`.
 ## » Requirements
 
 - **Java 25**
-- **Spigot, Paper**
 - **Minecraft `1.21.11`, `26.1`, or `26.2`**
 - Optional: [PacketEvents](https://github.com/retrooper/packetevents) for player hiding
 - Optional: [PlaceholderAPI](https://placeholderapi.com) for placeholders
