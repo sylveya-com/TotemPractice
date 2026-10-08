@@ -8,17 +8,14 @@ version = "1.0.1"
 
 repositories {
     mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.helpch.at/releases/")
     maven("https://repo.faststats.dev/releases")
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-api:4.25.0")
-    implementation("net.kyori:adventure-text-serializer-legacy:4.25.0")
-    implementation("net.kyori:adventure-text-minimessage:4.25.0")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     implementation("dev.faststats.metrics:bukkit:0.30.2")
     compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
     compileOnly("me.clip:placeholderapi:2.12.3")
@@ -32,7 +29,6 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 tasks.shadowJar {
-    relocate("net.kyori", "dev.lokspel.totempractice.thirdparty.kyori")
     exclude("META-INF/versions/*/module-info.class", "module-info.class")
     archiveClassifier.set("")
 }
