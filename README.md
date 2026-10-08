@@ -44,13 +44,11 @@ When the round ends, the final score is displayed in a title.
 
 ## » Player Hiding
 
-Players in a round are hidden from everyone outside the round and vice versa (this part works without PacketEvents).
+Players in a round are hidden from players outside the round and vice versa.
 
-With `hide.match-players-from-each-other` enabled (default), players practising at the same time also cannot see each other. Disable it to let them see each other.
+With `hide.match-players-from-each-other` enabled (default), players in different rounds cannot see each other or hear their sounds. This requires PacketEvents.
 
-## » Tab List Hiding
-
-When `hide.match-players-in-tab` is enabled and PacketEvents is installed, players currently in a round are hidden from the tab list of players outside that round.
+With `hide.match-players-in-tab` enabled, players hidden from each other are also removed from the tab list. This requires PacketEvents.
 
 ## » Placeholders
 
@@ -73,7 +71,7 @@ The expansion is available under both `totempractice` and `tp`.
 - **Java 25**
 - **Spigot, Paper**
 - **Minecraft `1.21.11`, `26.1`, or `26.2`**
-- Optional: [PacketEvents](https://github.com/retrooper/packetevents) for match player tab-list hiding
+- Optional: [PacketEvents](https://github.com/retrooper/packetevents) for player hiding
 - Optional: [PlaceholderAPI](https://placeholderapi.com) for placeholders
 
 ## » Build
