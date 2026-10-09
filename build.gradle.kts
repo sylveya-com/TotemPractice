@@ -30,6 +30,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.shadowJar {
     exclude("META-INF/versions/*/module-info.class", "module-info.class")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     archiveClassifier.set("")
 }
 
