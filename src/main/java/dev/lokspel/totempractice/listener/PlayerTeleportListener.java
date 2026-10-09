@@ -1,0 +1,50 @@
+package dev.lokspel.totempractice.listener;
+
+import dev.lokspel.totempractice.config.BackedConfig;
+import dev.lokspel.totempractice.game.Round;
+import dev.lokspel.totempractice.game.Rounds;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
+
+import java.util.UUID;
+
+/**
+ * Removes round participants who leave the match world.
+ */
+public final class PlayerTeleportListener implements Listener {
+
+    private final Rounds rounds;
+    private final BackedConfig backed;
+
+    public PlayerTeleportListener(Rounds rounds, BackedConfig backed) {
+        this.rounds = rounds;
+        this.backed = backed;
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        UUID playerId = player.getUniqueId();
+
+        Round round = rounds.find(playerId);
+        if (round == null) {
+            return;
+        }
+
+        Location to = event.getTo();
+        if (to.getWorld() == null) {
+            return;
+        }
+
+        Location match = backed.location("match");
+        if (match == null || to.getWorld().equals(match.getWorld())) {
+            return;
+        }
+
+        rounds.remove(player);
+    }
+}

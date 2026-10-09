@@ -1,5 +1,18 @@
-# Difficulty selection GUI. Placeholders: %interval% (seconds between lethal hits), %multiplier% (score multiplier), %offhand% (offhand-only warning, empty otherwise).
-# Slot keys must match a difficulty name from config.yml.
+# ============================================
+#             Difficulty Selection
+# ============================================
+# title: GUI title.
+# size: Inventory size (multiple of 9).
+# fill-material: Material used for empty slots.
+# offhand-warning: Warning shown when offhand-only is enabled.
+#
+# Placeholders:
+# %interval% - Time between lethal hits in seconds.
+# %multiplier% - Score multiplier.
+# %offhand% - Offhand warning or empty.
+# Slot keys must match difficulty names in config.yml.
+# ============================================
+
 difficulty-selection:
   title: "<white><bold>Choose difficulty"
   size: 27
@@ -19,6 +32,7 @@ difficulty-selection:
         - "%offhand%"
         - ""
         - "<gray>(<white>Click to start)"
+
     normal:
       slot: 12
       material: yellow_stained_glass_pane
@@ -30,6 +44,7 @@ difficulty-selection:
         - "%offhand%"
         - ""
         - "<gray>(<white>Click to start)"
+
     hard:
       slot: 14
       material: orange_stained_glass_pane
@@ -41,6 +56,7 @@ difficulty-selection:
         - "%offhand%"
         - ""
         - "<gray>(<white>Click to start)"
+      
     impossible:
       slot: 16
       material: red_stained_glass_pane

@@ -16,6 +16,7 @@ import dev.lokspel.totempractice.listener.PlayerDeathListener;
 import dev.lokspel.totempractice.listener.PlayerDropItemListener;
 import dev.lokspel.totempractice.listener.PlayerPickupListener;
 import dev.lokspel.totempractice.listener.PlayerQuitListener;
+import dev.lokspel.totempractice.listener.PlayerTeleportListener;
 import dev.lokspel.totempractice.util.SoftDependUtil;
 import dev.lokspel.totempractice.util.entityhider.PlayerHider;
 import dev.lokspel.totempractice.util.placeholderapi.PlayerExpansion;
@@ -84,6 +85,7 @@ public final class TotemPractice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDropItemListener(rounds), this);
         getServer().getPluginManager().registerEvents(new PlayerPickupListener(rounds), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(rounds), this);
+        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(rounds, mainConfig.backed()), this);
 
         new TotemPracticeAPI(this);
 

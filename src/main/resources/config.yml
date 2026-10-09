@@ -1,33 +1,66 @@
-# TotemPractice Configuration
+# ============================================
+#              Difficulty Settings
+# ============================================
+# Configure the difficulty levels for your Totem Practice rounds.
+#
+# hit-interval: Time in seconds between lethal hits.
+#               Lower values make the difficulty more challenging.
+#
+# offhand-hit-interval: Hit interval when offhand-only is enabled.
+#                       A longer interval gives players more time
+#                       to manually re-equip their totems.
+#
+# score-multiplier: Score multiplier awarded for this difficulty.
+#                   Higher values grant more points per action.
+#
+# offhand-only: If enabled, totems can only be used from the offhand.
+#               The main hand cannot be used to activate totems.
+#
+# You can create custom difficulties by copying an existing section,
+# renaming it, and adjusting its values.
+# ============================================
 
-# Seconds between lethal hits and the score multiplier for each difficulty.
-# Difficulty keys are free-form: copy a section, rename it and tune the values.
-# offhand-only: totems only work when held in the offhand; the offhand is left empty.
-# offhand-hit-interval: interval used when offhand-only is enabled (slower, so it can be re-equip manually).
 difficulties:
   easy:
     hit-interval: 2.0
     offhand-hit-interval: 3.0
     score-multiplier: 1.0
     offhand-only: true
+
   normal:
     hit-interval: 1.0
     offhand-hit-interval: 2.5
     score-multiplier: 2.0
     offhand-only: true
+
   hard:
     hit-interval: 0.5
     offhand-hit-interval: 2.0
     score-multiplier: 3.0
     offhand-only: true
+
   impossible:
     hit-interval: 0.25
     offhand-hit-interval: 1.5
     score-multiplier: 5.0
     offhand-only: true
 
+
+# ============================================
+#               Player Visibility
+# ============================================
+# Configure player visibility during active rounds.
+# These settings require PacketEvents to be installed.
+#
+# match-players-in-tab: If enabled, players participating in a
+#                       round are hidden from the tab list of
+#                       players outside that round.
+#
+# match-players-from-each-other: If enabled, players participating
+#                                in the same round are hidden
+#                                from each other.
+# ============================================
+
 hide:
-  # Hide players in a round from the tab list of everyone else (requires PacketEvents installed)
   match-players-in-tab: false
-  # Hide players in a round from each other? (requires PacketEvents installed)
   match-players-from-each-other: true

@@ -1,24 +1,22 @@
-# Uses MiniMessage format: https://docs.advntr.dev/minimessage/
+# ============================================
+#                 MiniMessage
+# ============================================
+# Format documentation: https://docs.advntr.dev/minimessage/
 
-# Prefix prepended to messages sent via prefixed()
-prefix: "<gold>[TotemPractice]</gold> "
+# Prefix is added to messages using %prefix%.
+prefix: "<gold>[TotemPractice] "
 
-# Command Errors
-usage: "%prefix%<red>Usage: /totempractice"
+usage: "%prefix%<red>Usage: /totempractice <gui|set>"
 player-only: "<red>Only players can use this command."
 no-permission: "<red>You don't have permission to use this command."
 
-# Game Start
 already-running: "%prefix%<red>A round is already running."
 cannot-start-dead: "%prefix%<red>You cannot start a round while dead."
 
-# Admin
-point-set: "%prefix%<green><type> teleport point set."
+point-set: "%prefix%<green>Teleport point <type> set."
 
-# In-Game
 round-starting: "<white>Starting in <gold><seconds>s"
 
-# Results
 results:
   title: "<gold><bold>Totem Practice"
   subtitle: "<white>Ended with Score <score>"
