@@ -77,7 +77,8 @@ public final class Rounds {
         }
 
         PlayerUtil.switchToSurvival(player);
-        InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS);
+        boolean offhandOnly = config.difficulties().offhandOnly(difficulty);
+        InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, offhandOnly);
 
         Location location = config.backed().location("match");
         if (location != null) {
@@ -87,8 +88,9 @@ public final class Rounds {
         rounds.put(playerId, new Round(
                 playerId,
                 difficulty,
-                config.difficulties().hitInterval(difficulty),
-                config.difficulties().scoreMultiplier(difficulty)
+                config.difficulties().effectiveHitInterval(difficulty),
+                config.difficulties().scoreMultiplier(difficulty),
+                offhandOnly
         ));
         lastCountdown.put(playerId, -1L);
 

@@ -41,6 +41,10 @@ public final class GuiConfig {
         return config.getString(PATH + "fill-material", "gray_stained_glass_pane");
     }
 
+    public String offhandWarning() {
+        return config.getString(PATH + "offhand-warning", "<red>Hold your totem in the offhand!");
+    }
+
     public Map<Difficulty, SlotConfig> difficultySlots() {
         Map<Difficulty, SlotConfig> slots = new EnumMap<>(Difficulty.class);
         for (Difficulty difficulty : Difficulty.values()) {

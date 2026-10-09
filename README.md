@@ -17,7 +17,9 @@ Difficulties control the time between hits and the score multiplier, allowing di
 Each difficulty defines:
 
 * Lethal hit interval
+* Offhand hit interval (used when `offhand-only` is enabled)
 * Score multiplier
+* Whether totems only work from the offhand (`offhand-only`)
 
 Difficulties and their GUI entries can be configured through `guis.yml`.
 
@@ -64,6 +66,7 @@ The expansion is available under both `totempractice` and `tp`.
 | `%totempractice_difficulty%`       | Current difficulty                |
 | `%totempractice_hit_interval%`     | Seconds between lethal hits       |
 | `%totempractice_score_multiplier%` | Current score multiplier          |
+| `%totempractice_offhand_only%`     | Whether the round requires an offhand totem |
 | `%totempractice_next_hit%`         | Seconds until the next lethal hit |
 
 ## » Requirements

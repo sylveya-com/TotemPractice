@@ -12,16 +12,18 @@ public final class Round {
     private final Difficulty difficulty;
     private final long hitIntervalMillis;
     private final double scoreMultiplier;
+    private final boolean offhandOnly;
 
     private int totemsUsed;
     private long nextHitAt;
     private boolean started;
 
-    Round(UUID playerId, Difficulty difficulty, double hitIntervalSeconds, double scoreMultiplier) {
+    Round(UUID playerId, Difficulty difficulty, double hitIntervalSeconds, double scoreMultiplier, boolean offhandOnly) {
         this.playerId = playerId;
         this.difficulty = difficulty;
         this.hitIntervalMillis = Math.round(hitIntervalSeconds * 1000.0D);
         this.scoreMultiplier = scoreMultiplier;
+        this.offhandOnly = offhandOnly;
 
         long startedAt = System.currentTimeMillis();
         this.nextHitAt = startedAt + FIRST_HIT_DELAY_MILLIS;
@@ -66,6 +68,10 @@ public final class Round {
 
     public double scoreMultiplier() {
         return scoreMultiplier;
+    }
+
+    public boolean offhandOnly() {
+        return offhandOnly;
     }
 
     public int score() {

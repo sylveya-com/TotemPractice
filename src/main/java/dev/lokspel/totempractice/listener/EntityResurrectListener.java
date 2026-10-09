@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityResurrectEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public final class EntityResurrectListener implements Listener {
 
@@ -16,14 +17,19 @@ public final class EntityResurrectListener implements Listener {
         this.rounds = rounds;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void handle(EntityResurrectEvent event) {
-        if (event.getHand() == null || !(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
         Round round = rounds.find(player.getUniqueId());
-        if (round != null) {
-            round.useTotem();
+        if (round == null) {
+            return;
         }
+        if (round.offhandOnly() && event.getHand() != EquipmentSlot.OFF_HAND) {
+            event.setCancelled(true);
+            return;
+        }
+        round.useTotem();
     }
 }

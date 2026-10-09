@@ -1,19 +1,29 @@
 # TotemPractice Configuration
 
 # Seconds between lethal hits and the score multiplier for each difficulty.
+# offhand-only: totems only work when held in the offhand; the offhand is left empty.
+# offhand-hit-interval: interval used when offhand-only is enabled (slower, so it can be re-equip manually).
 difficulties:
   easy:
     hit-interval: 2.0
+    offhand-hit-interval: 3.0
     score-multiplier: 1.0
+    offhand-only: false
   normal:
     hit-interval: 1.0
+    offhand-hit-interval: 2.5
     score-multiplier: 2.0
+    offhand-only: false
   hard:
     hit-interval: 0.5
+    offhand-hit-interval: 2.0
     score-multiplier: 3.0
+    offhand-only: false
   impossible:
     hit-interval: 0.25
+    offhand-hit-interval: 1.5
     score-multiplier: 5.0
+    offhand-only: false
 
 hide:
   # Hide players in a round from the tab list of everyone else (requires PacketEvents installed)

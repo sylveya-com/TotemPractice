@@ -24,8 +24,20 @@ public class DifficultiesSection {
         return config().getDouble(PATH + key(difficulty) + ".hit-interval", 1.0D);
     }
 
+    public double offhandHitInterval(Difficulty difficulty) {
+        return config().getDouble(PATH + key(difficulty) + ".offhand-hit-interval", hitInterval(difficulty));
+    }
+
+    public double effectiveHitInterval(Difficulty difficulty) {
+        return offhandOnly(difficulty) ? offhandHitInterval(difficulty) : hitInterval(difficulty);
+    }
+
     public double scoreMultiplier(Difficulty difficulty) {
         return config().getDouble(PATH + key(difficulty) + ".score-multiplier", 1.0D);
+    }
+
+    public boolean offhandOnly(Difficulty difficulty) {
+        return config().getBoolean(PATH + key(difficulty) + ".offhand-only", false);
     }
 
     private static String key(Difficulty difficulty) {
