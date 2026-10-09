@@ -21,8 +21,6 @@ Each difficulty defines:
 * Score multiplier
 * Whether totems only work from the offhand (`offhand-only`)
 
-Difficulties and their GUI entries can be configured through `guis.yml`.
-
 ## » Rounds
 
 Before a round starts, an actionbar countdown is shown and the player is teleported to the configured match location.

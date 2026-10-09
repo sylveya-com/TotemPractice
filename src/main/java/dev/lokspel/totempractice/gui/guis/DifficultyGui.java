@@ -15,16 +15,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class DifficultyGui extends Gui {
 
     private final Rounds rounds;
     private final DifficultiesSection difficulties;
-    private final Map<Difficulty, GuiConfig.SlotConfig> slots;
-    private final Map<Integer, Difficulty> slotToDifficulty;
+    private final Map<String, GuiConfig.SlotConfig> slots;
+    private final Map<Integer, String> slotToDifficulty;
     private final String fillMaterial;
     private final String offhandWarning;
 
@@ -33,8 +33,10 @@ public final class DifficultyGui extends Gui {
         this.rounds = rounds;
         this.difficulties = difficulties;
         this.slots = config.difficultySlots();
-        this.slotToDifficulty = slots.entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getValue().slot(), Map.Entry::getKey));
+        this.slotToDifficulty = new HashMap<>();
+        for (Map.Entry<String, GuiConfig.SlotConfig> entry : slots.entrySet()) {
+            slotToDifficulty.put(entry.getValue().slot(), entry.getKey());
+        }
         this.fillMaterial = config.fillMaterial();
         this.offhandWarning = config.offhandWarning();
     }
@@ -44,7 +46,11 @@ public final class DifficultyGui extends Gui {
         if (event.getClickedInventory() != event.getView().getTopInventory()) {
             return;
         }
-        Difficulty difficulty = slotToDifficulty.get(event.getSlot());
+        String name = slotToDifficulty.get(event.getSlot());
+        if (name == null) {
+            return;
+        }
+        Difficulty difficulty = difficulties.get(name);
         if (difficulty == null) {
             return;
         }
@@ -56,7 +62,12 @@ public final class DifficultyGui extends Gui {
     @Override
     protected void populate(Inventory inventory) {
         InventoryUtil.fillAll(inventory, fillMaterial, Material.GRAY_STAINED_GLASS_PANE);
-        slots.forEach((difficulty, slot) -> inventory.setItem(slot.slot(), icon(difficulty, slot)));
+        slots.forEach((name, slot) -> {
+            Difficulty difficulty = difficulties.get(name);
+            if (difficulty != null) {
+                inventory.setItem(slot.slot(), icon(difficulty, slot));
+            }
+        });
     }
 
     private ItemStack icon(Difficulty difficulty, GuiConfig.SlotConfig slot) {
@@ -68,11 +79,11 @@ public final class DifficultyGui extends Gui {
     }
 
     private List<String> placeholders(List<String> lore, Difficulty difficulty) {
-        String offhand = difficulties.offhandOnly(difficulty) ? offhandWarning : "";
+        String offhand = difficulty.offhandOnly() ? offhandWarning : "";
         return lore.stream()
                 .map(line -> line
-                        .replace("%interval%", NumberUtil.format(difficulties.effectiveHitInterval(difficulty)))
-                        .replace("%multiplier%", NumberUtil.format(difficulties.scoreMultiplier(difficulty)))
+                        .replace("%interval%", NumberUtil.format(difficulty.effectiveHitInterval()))
+                        .replace("%multiplier%", NumberUtil.format(difficulty.scoreMultiplier()))
                         .replace("%offhand%", offhand))
                 .filter(line -> !line.isBlank())
                 .toList();

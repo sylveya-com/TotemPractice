@@ -1,14 +1,13 @@
 package dev.lokspel.totempractice.config;
 
 import dev.lokspel.totempractice.TotemPractice;
-import dev.lokspel.totempractice.game.Difficulty;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public final class GuiConfig {
@@ -45,14 +44,18 @@ public final class GuiConfig {
         return config.getString(PATH + "offhand-warning", "<red>Hold your totem in the offhand!");
     }
 
-    public Map<Difficulty, SlotConfig> difficultySlots() {
-        Map<Difficulty, SlotConfig> slots = new EnumMap<>(Difficulty.class);
-        for (Difficulty difficulty : Difficulty.values()) {
-            String path = PATH + "slots." + difficulty.name().toLowerCase(Locale.ROOT);
-            slots.put(difficulty, new SlotConfig(
+    public Map<String, SlotConfig> difficultySlots() {
+        Map<String, SlotConfig> slots = new LinkedHashMap<>();
+        ConfigurationSection section = config.getConfigurationSection(PATH + "slots");
+        if (section == null) {
+            return slots;
+        }
+        for (String name : section.getKeys(false)) {
+            String path = PATH + "slots." + name;
+            slots.put(name, new SlotConfig(
                     config.getInt(path + ".slot"),
                     config.getString(path + ".material", "lime_concrete"),
-                    config.getString(path + ".name", "<green><bold>" + difficulty.name() + "</bold></green>"),
+                    config.getString(path + ".name", "<green><bold>" + name + "</bold></green>"),
                     config.getStringList(path + ".lore"),
                     config.getBoolean(path + ".glint", true)
             ));

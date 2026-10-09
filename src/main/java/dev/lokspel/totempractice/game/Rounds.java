@@ -77,21 +77,14 @@ public final class Rounds {
         }
 
         PlayerUtil.switchToSurvival(player);
-        boolean offhandOnly = config.difficulties().offhandOnly(difficulty);
-        InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, offhandOnly);
+        InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, difficulty.offhandOnly());
 
         Location location = config.backed().location("match");
         if (location != null) {
             player.teleport(location);
         }
 
-        rounds.put(playerId, new Round(
-                playerId,
-                difficulty,
-                config.difficulties().effectiveHitInterval(difficulty),
-                config.difficulties().scoreMultiplier(difficulty),
-                offhandOnly
-        ));
+        rounds.put(playerId, new Round(playerId, difficulty));
         lastCountdown.put(playerId, -1L);
 
         Bukkit.getPluginManager().callEvent(new RoundStartEvent(player));

@@ -18,12 +18,12 @@ public final class Round {
     private long nextHitAt;
     private boolean started;
 
-    Round(UUID playerId, Difficulty difficulty, double hitIntervalSeconds, double scoreMultiplier, boolean offhandOnly) {
+    Round(UUID playerId, Difficulty difficulty) {
         this.playerId = playerId;
         this.difficulty = difficulty;
-        this.hitIntervalMillis = Math.round(hitIntervalSeconds * 1000.0D);
-        this.scoreMultiplier = scoreMultiplier;
-        this.offhandOnly = offhandOnly;
+        this.hitIntervalMillis = Math.round(difficulty.effectiveHitInterval() * 1000.0D);
+        this.scoreMultiplier = difficulty.scoreMultiplier();
+        this.offhandOnly = difficulty.offhandOnly();
 
         long startedAt = System.currentTimeMillis();
         this.nextHitAt = startedAt + FIRST_HIT_DELAY_MILLIS;

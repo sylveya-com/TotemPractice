@@ -51,7 +51,7 @@ public class PlayerExpansion extends PlaceholderExpansion {
             case "state" -> round == null ? "none" : "round";
             case "score" -> round == null ? "0" : String.valueOf(api.getScore(player));
             case "totems_used" -> round == null ? "0" : String.valueOf(round.totemsUsed());
-            case "difficulty" -> round == null ? "none" : round.difficulty().name().toLowerCase();
+            case "difficulty" -> round == null ? "none" : round.difficulty().name();
             case "hit_interval" -> round == null ? "-1" : String.valueOf(round.hitIntervalSeconds());
             case "score_multiplier" -> round == null ? "-1" : String.valueOf(round.scoreMultiplier());
             case "offhand_only" -> round == null ? "false" : String.valueOf(round.offhandOnly());

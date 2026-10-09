@@ -2,9 +2,11 @@ package dev.lokspel.totempractice.config.section;
 
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.game.Difficulty;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.Locale;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DifficultiesSection {
 
@@ -20,27 +22,33 @@ public class DifficultiesSection {
         return plugin.getConfig();
     }
 
-    public double hitInterval(Difficulty difficulty) {
-        return config().getDouble(PATH + key(difficulty) + ".hit-interval", 1.0D);
+    public Difficulty get(String name) {
+        ConfigurationSection section = config().getConfigurationSection(PATH + name);
+        return section == null ? null : fromSection(name, section);
     }
 
-    public double offhandHitInterval(Difficulty difficulty) {
-        return config().getDouble(PATH + key(difficulty) + ".offhand-hit-interval", hitInterval(difficulty));
+    public Map<String, Difficulty> all() {
+        Map<String, Difficulty> difficulties = new LinkedHashMap<>();
+        ConfigurationSection section = config().getConfigurationSection("difficulties");
+        if (section == null) {
+            return difficulties;
+        }
+        for (String name : section.getKeys(false)) {
+            if (section.isConfigurationSection(name)) {
+                difficulties.put(name, fromSection(name, section.getConfigurationSection(name)));
+            }
+        }
+        return difficulties;
     }
 
-    public double effectiveHitInterval(Difficulty difficulty) {
-        return offhandOnly(difficulty) ? offhandHitInterval(difficulty) : hitInterval(difficulty);
-    }
-
-    public double scoreMultiplier(Difficulty difficulty) {
-        return config().getDouble(PATH + key(difficulty) + ".score-multiplier", 1.0D);
-    }
-
-    public boolean offhandOnly(Difficulty difficulty) {
-        return config().getBoolean(PATH + key(difficulty) + ".offhand-only", false);
-    }
-
-    private static String key(Difficulty difficulty) {
-        return difficulty.name().toLowerCase(Locale.ROOT);
+    private static Difficulty fromSection(String name, ConfigurationSection section) {
+        double hitInterval = section.getDouble("hit-interval", 1.0D);
+        return new Difficulty(
+                name,
+                hitInterval,
+                section.getDouble("offhand-hit-interval", hitInterval),
+                section.getDouble("score-multiplier", 1.0D),
+                section.getBoolean("offhand-only", false)
+        );
     }
 }

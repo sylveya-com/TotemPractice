@@ -1,49 +1,54 @@
-# Difficulty selection GUI. Placeholders: %interval% (seconds between lethal hits), %multiplier% (score multiplier), %offhand% (offhand-only warning, empty otherwise)
+# Difficulty selection GUI. Placeholders: %interval% (seconds between lethal hits), %multiplier% (score multiplier), %offhand% (offhand-only warning, empty otherwise).
+# Slot keys must match a difficulty name from config.yml.
 difficulty-selection:
   title: "<white><bold>Choose difficulty"
   size: 27
   fill-material: gray_stained_glass_pane
   # Line shown only on difficulties with offhand-only enabled (via %offhand%)
-  offhand-warning: "<red>Hold your totem in the offhand!"
+  offhand-warning: "<red><bold>⚠ <red>Totem must be in offhand!"
   slots:
-      # Lethal hit every: %interval%s | Score multiplier: x%multiplier%
+      # Lethal hit interval: %interval%s | Score multiplier: x%multiplier%
     easy:
       slot: 10
       material: green_stained_glass_pane
       name: "<green><bold>Easy"
       glint: false
       lore:
-        - "<gray>Lethal hit every: <white>%interval%s"
-        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
+        - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
-        - "<gray>(<white>Click to start"
+        - ""
+        - "<gray>(<white>Click to start)"
     normal:
       slot: 12
       material: yellow_stained_glass_pane
       name: "<yellow><bold>Normal"
       glint: true
       lore:
-        - "<gray>Lethal hit every: <white>%interval%s"
-        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
+        - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
-        - "<gray>(<white>Click to start"
+        - ""
+        - "<gray>(<white>Click to start)"
     hard:
       slot: 14
       material: orange_stained_glass_pane
       name: "<gold><bold>Hard"
       glint: true
       lore:
-        - "<gray>Lethal hit every: <white>%interval%s"
-        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
+        - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
-        - "<gray>(<white>Click to start"
+        - ""
+        - "<gray>(<white>Click to start)"
     impossible:
       slot: 16
       material: red_stained_glass_pane
       name: "<red><bold>Impossible"
       glint: true
       lore:
-        - "<gray>Lethal hit every: <white>%interval%s"
-        - "<gray>Score multiplier: <white>x%multiplier%"
+        - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
+        - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
-        - "<gray>(<white>Click to start"
+        - ""
+        - "<gray>(<white>Click to start)"
