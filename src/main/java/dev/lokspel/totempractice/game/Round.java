@@ -75,6 +75,6 @@ public final class Round {
     }
 
     public int score() {
-        return Math.max(1, (int) Math.round(totemsUsed * scoreMultiplier));
+        return (int) Math.round(totemsUsed * scoreMultiplier);
     }
 }
