@@ -191,7 +191,7 @@ public class PlayerHider implements Listener {
     }
 
     private Round roundOf(Player player) {
-        return plugin.getRounds().find(player.getUniqueId());
+        return plugin.getRoundManager().find(player.getUniqueId());
     }
 
     private void showPlayer(Player viewer, Player target) {

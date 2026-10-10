@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Rounds {
+public final class RoundManager {
 
     public static final double HIT_DAMAGE = 1000.0D;
 
@@ -21,7 +21,7 @@ public final class Rounds {
     private final Map<UUID, Round> rounds = new HashMap<>();
     private final Map<UUID, Long> lastCountdown = new HashMap<>();
 
-    public Rounds(TotemPractice plugin) {
+    public RoundManager(TotemPractice plugin) {
         this.plugin = plugin;
     }
 

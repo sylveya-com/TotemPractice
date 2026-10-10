@@ -8,7 +8,7 @@ import dev.lokspel.totempractice.command.ReloadCommand;
 import dev.lokspel.totempractice.command.SetCommand;
 import dev.lokspel.totempractice.config.GuiConfig;
 import dev.lokspel.totempractice.config.MainConfig;
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.gui.guis.DifficultyGui;
 import dev.lokspel.totempractice.gui.listener.GuiCloseListener;
 import dev.lokspel.totempractice.gui.listener.GuiInteractionListener;
@@ -38,7 +38,7 @@ public final class TotemPractice extends JavaPlugin {
     private static TotemPractice instance;
 
     private MainConfig mainConfig;
-    private Rounds rounds;
+    private RoundManager roundManager;
     private PlayerHider playerHider;
 
     private final BukkitContext fastStatsContext = new BukkitContext.Factory(this, "7a66e6383b0e054e6a12749a58fb28f8")
@@ -65,11 +65,11 @@ public final class TotemPractice extends JavaPlugin {
             playerHider = new PlayerHider(this);
             getServer().getPluginManager().registerEvents(playerHider, this);
         }
-        rounds = new Rounds(this);
+        roundManager = new RoundManager(this);
 
-        new DifficultyGui(rounds, mainConfig.difficulties(), new GuiConfig(this));
+        new DifficultyGui(roundManager, mainConfig.difficulties(), new GuiConfig(this));
 
-        getServer().getScheduler().runTaskTimer(this, rounds::tick, 5L, 1L);
+        getServer().getScheduler().runTaskTimer(this, roundManager::tick, 5L, 1L);
 
         CommandDispatcher dispatcher = new CommandDispatcher(mainConfig, List.of(
                 new RegisteredCommand("gui", new GuiCommand(this)),
@@ -82,11 +82,11 @@ public final class TotemPractice extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GuiInteractionListener(), this);
         getServer().getPluginManager().registerEvents(new GuiCloseListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityResurrectListener(rounds), this);
+        getServer().getPluginManager().registerEvents(new EntityResurrectListener(roundManager), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(rounds), this);
-        getServer().getPluginManager().registerEvents(new PlayerPickupListener(rounds), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuitListener(rounds), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItemListener(roundManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerPickupListener(roundManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(roundManager), this);
         getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
 
         new TotemPracticeAPI(this);

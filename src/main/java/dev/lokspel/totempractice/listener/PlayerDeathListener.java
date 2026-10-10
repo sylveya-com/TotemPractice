@@ -6,7 +6,7 @@ import dev.lokspel.totempractice.config.BackedConfig;
 import dev.lokspel.totempractice.config.MessagesConfig;
 import dev.lokspel.totempractice.game.Results;
 import dev.lokspel.totempractice.game.Round;
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,13 +22,13 @@ import java.util.UUID;
 
 public final class PlayerDeathListener implements Listener {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
     private final MessagesConfig messages;
     private final BackedConfig backed;
     private final Set<UUID> toLobby = new HashSet<>();
 
     public PlayerDeathListener(TotemPractice plugin) {
-        this.rounds = plugin.getRounds();
+        this.roundManager = plugin.getRoundManager();
         this.messages = plugin.getMainConfig().messages();
         this.backed = plugin.getMainConfig().backed();
     }
@@ -36,12 +36,12 @@ public final class PlayerDeathListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void handle(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        if (!rounds.isParticipant(player)) {
+        if (!roundManager.isParticipant(player)) {
             return;
         }
         event.getDrops().clear();
 
-        Round round = rounds.remove(player);
+        Round round = roundManager.remove(player);
         if (round != null) {
             Results.show(player, round, messages);
             toLobby.add(player.getUniqueId());

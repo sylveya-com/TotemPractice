@@ -1,6 +1,6 @@
 package dev.lokspel.totempractice.listener;
 
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,10 +9,10 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public final class PlayerPickupListener implements Listener {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
 
-    public PlayerPickupListener(Rounds rounds) {
-        this.rounds = rounds;
+    public PlayerPickupListener(RoundManager roundManager) {
+        this.roundManager = roundManager;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -20,7 +20,7 @@ public final class PlayerPickupListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (!rounds.isParticipant(player)) {
+        if (!roundManager.isParticipant(player)) {
             return;
         }
         if (event.getItem().getItemStack().getType() == Material.TOTEM_OF_UNDYING) {

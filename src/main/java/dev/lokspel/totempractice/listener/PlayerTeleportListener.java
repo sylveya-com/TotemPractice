@@ -3,7 +3,7 @@ package dev.lokspel.totempractice.listener;
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.config.BackedConfig;
 import dev.lokspel.totempractice.game.Round;
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,11 +18,11 @@ import java.util.UUID;
  */
 public final class PlayerTeleportListener implements Listener {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
     private final BackedConfig backed;
 
     public PlayerTeleportListener(TotemPractice plugin) {
-        this.rounds = plugin.getRounds();
+        this.roundManager = plugin.getRoundManager();
         this.backed = plugin.getMainConfig().backed();
     }
 
@@ -31,7 +31,7 @@ public final class PlayerTeleportListener implements Listener {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
 
-        Round round = rounds.find(playerId);
+        Round round = roundManager.find(playerId);
         if (round == null) {
             return;
         }
@@ -46,6 +46,6 @@ public final class PlayerTeleportListener implements Listener {
             return;
         }
 
-        rounds.remove(player);
+        roundManager.remove(player);
     }
 }

@@ -27,7 +27,7 @@ public class TotemPracticeAPI {
      * Returns the round a player is currently in, or {@code null} if none.
      */
     public Round getRound(Player player) {
-        return plugin.getRounds().find(player.getUniqueId());
+        return plugin.getRoundManager().find(player.getUniqueId());
     }
 
     /**

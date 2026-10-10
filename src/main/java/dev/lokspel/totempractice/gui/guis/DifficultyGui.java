@@ -3,7 +3,7 @@ package dev.lokspel.totempractice.gui.guis;
 import dev.lokspel.totempractice.config.GuiConfig;
 import dev.lokspel.totempractice.config.section.DifficultiesSection;
 import dev.lokspel.totempractice.game.Difficulty;
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.gui.Gui;
 import dev.lokspel.totempractice.gui.GuiType;
 import dev.lokspel.totempractice.util.ItemBuilder;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public final class DifficultyGui extends Gui {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
     private final DifficultiesSection difficulties;
     private final Map<String, GuiConfig.SlotConfig> slots;
     private final Map<Integer, String> slotToDifficulty;
@@ -29,9 +29,9 @@ public final class DifficultyGui extends Gui {
     private final String offhandWarning;
     private final String randomWarning;
 
-    public DifficultyGui(Rounds rounds, DifficultiesSection difficulties, GuiConfig config) {
+    public DifficultyGui(RoundManager roundManager, DifficultiesSection difficulties, GuiConfig config) {
         super(GuiType.DIFFICULTY_SELECTION, config.title(), config.size());
-        this.rounds = rounds;
+        this.roundManager = roundManager;
         this.difficulties = difficulties;
         this.slots = config.difficultySlots();
         this.slotToDifficulty = new HashMap<>();
@@ -58,7 +58,7 @@ public final class DifficultyGui extends Gui {
         }
         Player player = (Player) event.getWhoClicked();
         close(player);
-        rounds.start(player, difficulty);
+        roundManager.start(player, difficulty);
     }
 
     @Override

@@ -2,7 +2,7 @@ package dev.lokspel.totempractice.listener;
 
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.game.Round;
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,10 +16,10 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class EntityResurrectListener implements Listener {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
 
-    public EntityResurrectListener(Rounds rounds) {
-        this.rounds = rounds;
+    public EntityResurrectListener(RoundManager roundManager) {
+        this.roundManager = roundManager;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -28,20 +28,20 @@ public final class EntityResurrectListener implements Listener {
             return;
         }
 
-        Round round = rounds.find(player.getUniqueId());
+        Round round = roundManager.find(player.getUniqueId());
         if (round == null) {
             return;
         }
 
         if (!round.offhandOnly()) {
             round.useTotem();
-            rounds.hideRandomTotem(player, round);
+            roundManager.hideRandomTotem(player, round);
             return;
         }
 
         if (event.getHand() == EquipmentSlot.OFF_HAND) {
             round.useTotem();
-            rounds.hideRandomTotem(player, round);
+            roundManager.hideRandomTotem(player, round);
             return;
         }
 
@@ -67,7 +67,7 @@ public final class EntityResurrectListener implements Listener {
                 return;
             }
 
-            if (rounds.find(player.getUniqueId()) != round) {
+            if (roundManager.find(player.getUniqueId()) != round) {
                 return;
             }
 
@@ -106,7 +106,7 @@ public final class EntityResurrectListener implements Listener {
             }
 
             round.useTotem();
-            rounds.hideRandomTotem(player, round);
+            roundManager.hideRandomTotem(player, round);
         });
     }
 }

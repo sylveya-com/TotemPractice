@@ -1,20 +1,20 @@
 package dev.lokspel.totempractice.listener;
 
-import dev.lokspel.totempractice.game.Rounds;
+import dev.lokspel.totempractice.game.RoundManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public final class PlayerQuitListener implements Listener {
 
-    private final Rounds rounds;
+    private final RoundManager roundManager;
 
-    public PlayerQuitListener(Rounds rounds) {
-        this.rounds = rounds;
+    public PlayerQuitListener(RoundManager roundManager) {
+        this.roundManager = roundManager;
     }
 
     @EventHandler
     public void handle(PlayerQuitEvent event) {
-        rounds.remove(event.getPlayer());
+        roundManager.remove(event.getPlayer());
     }
 }

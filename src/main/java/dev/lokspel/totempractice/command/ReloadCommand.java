@@ -25,7 +25,7 @@ public final class ReloadCommand implements SubCommand {
         }
 
         config.load();
-        new DifficultyGui(plugin.getRounds(), config.difficulties(), new GuiConfig(plugin));
+        new DifficultyGui(plugin.getRoundManager(), config.difficulties(), new GuiConfig(plugin));
         if (SoftDependUtil.PACKET_EVENTS_ENABLED && plugin.getPlayerHider() != null) {
             plugin.getPlayerHider().refreshVisibility();
         }
