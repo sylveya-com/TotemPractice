@@ -16,6 +16,11 @@
 # offhand-only: If enabled, totems can only be used from the offhand.
 #               The main hand cannot be used to activate totems.
 #
+# random-totem: If enabled, only a single totem is placed in a random
+#               inventory slot instead of filling the whole inventory.
+#               After each successful totem pop a new one is hidden in a
+#               random slot again, so the player must find it before use.
+#
 # You can create custom difficulties by copying an existing section,
 # renaming it, and adjusting its values.
 # ============================================
@@ -23,27 +28,31 @@
 difficulties:
   easy:
     hit-interval: 2.0
-    offhand-hit-interval: 3.0
+    offhand-hit-interval: 2.5
     score-multiplier: 1.0
-    offhand-only: true
+    offhand-only: false
+    random-totem: false
 
   normal:
-    hit-interval: 1.0
-    offhand-hit-interval: 2.5
+    hit-interval: 1.5
+    offhand-hit-interval: 2.0
     score-multiplier: 2.0
     offhand-only: true
+    random-totem: false
 
   hard:
-    hit-interval: 0.5
-    offhand-hit-interval: 2.0
+    hit-interval: 1.0
+    offhand-hit-interval: 1.75
     score-multiplier: 3.0
     offhand-only: true
+    random-totem: true
 
   impossible:
     hit-interval: 0.25
-    offhand-hit-interval: 1.5
+    offhand-hit-interval: 1.25
     score-multiplier: 5.0
     offhand-only: true
+    random-totem: true
 
 
 # ============================================

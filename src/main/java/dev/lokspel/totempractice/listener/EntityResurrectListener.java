@@ -35,11 +35,13 @@ public final class EntityResurrectListener implements Listener {
 
         if (!round.offhandOnly()) {
             round.useTotem();
+            rounds.hideRandomTotem(player, round);
             return;
         }
 
         if (event.getHand() == EquipmentSlot.OFF_HAND) {
             round.useTotem();
+            rounds.hideRandomTotem(player, round);
             return;
         }
 
@@ -104,6 +106,7 @@ public final class EntityResurrectListener implements Listener {
             }
 
             round.useTotem();
+            rounds.hideRandomTotem(player, round);
         });
     }
 }

@@ -13,6 +13,7 @@ public final class Round {
     private final long hitIntervalMillis;
     private final double scoreMultiplier;
     private final boolean offhandOnly;
+    private final boolean randomTotem;
 
     private int totemsUsed;
     private long nextHitAt;
@@ -24,6 +25,7 @@ public final class Round {
         this.hitIntervalMillis = Math.round(difficulty.effectiveHitInterval() * 1000.0D);
         this.scoreMultiplier = difficulty.scoreMultiplier();
         this.offhandOnly = difficulty.offhandOnly();
+        this.randomTotem = difficulty.randomTotem();
 
         long startedAt = System.currentTimeMillis();
         this.nextHitAt = startedAt + FIRST_HIT_DELAY_MILLIS;
@@ -72,6 +74,10 @@ public final class Round {
 
     public boolean offhandOnly() {
         return offhandOnly;
+    }
+
+    public boolean randomTotem() {
+        return randomTotem;
     }
 
     public int score() {

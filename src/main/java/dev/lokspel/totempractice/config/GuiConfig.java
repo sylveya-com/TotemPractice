@@ -41,7 +41,11 @@ public final class GuiConfig {
     }
 
     public String offhandWarning() {
-        return config.getString(PATH + "offhand-warning", "<red>Hold your totem in the offhand!");
+        return config.getString(PATH + "offhand-warning", "<red><bold>⚠ <red>Totem must be in offhand!");
+    }
+
+    public String randomWarning() {
+        return config.getString(PATH + "random-warning", "<gold><bold>? <gold>Find the hidden totem!");
     }
 
     public Map<String, SlotConfig> difficultySlots() {

@@ -20,6 +20,7 @@ Each difficulty defines:
 * Offhand hit interval (used when `offhand-only` is enabled)
 * Score multiplier
 * Whether totems only work from the offhand (`offhand-only`)
+* Whether a single totem is hidden in a random slot (`random-totem`)
 
 ## » Rounds
 
@@ -65,6 +66,7 @@ The expansion is available under both `totempractice` and `tp`.
 | `%totempractice_hit_interval%`     | Seconds between lethal hits       |
 | `%totempractice_score_multiplier%` | Current score multiplier          |
 | `%totempractice_offhand_only%`     | Whether the round requires an offhand totem |
+| `%totempractice_random_totem%`     | Whether totems are hidden in a random slot  |
 | `%totempractice_next_hit%`         | Seconds until the next lethal hit |
 
 ## » Requirements

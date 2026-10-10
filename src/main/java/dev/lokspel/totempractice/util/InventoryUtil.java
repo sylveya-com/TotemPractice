@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class InventoryUtil {
 
@@ -18,6 +19,18 @@ public final class InventoryUtil {
             inventory.setItem(slot, totem.clone());
         }
         inventory.setItemInOffHand(offhandOnly ? null : totem.clone());
+    }
+
+    public static void giveRandomTotem(PlayerInventory inventory, int storageSlots) {
+        for (int slot = 0; slot < storageSlots; slot++) {
+            inventory.setItem(slot, null);
+        }
+        inventory.setItemInOffHand(null);
+        if (storageSlots <= 0) {
+            return;
+        }
+        int slot = ThreadLocalRandom.current().nextInt(storageSlots);
+        inventory.setItem(slot, new ItemStack(Material.TOTEM_OF_UNDYING));
     }
 
     public static void fillAll(Inventory inventory, String material, Material fallback) {

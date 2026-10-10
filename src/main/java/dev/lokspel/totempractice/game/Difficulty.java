@@ -7,13 +7,15 @@ public final class Difficulty {
     private final double offhandHitInterval;
     private final double scoreMultiplier;
     private final boolean offhandOnly;
+    private final boolean randomTotem;
 
-    public Difficulty(String name, double hitInterval, double offhandHitInterval, double scoreMultiplier, boolean offhandOnly) {
+    public Difficulty(String name, double hitInterval, double offhandHitInterval, double scoreMultiplier, boolean offhandOnly, boolean randomTotem) {
         this.name = name;
         this.hitInterval = hitInterval;
         this.offhandHitInterval = offhandHitInterval;
         this.scoreMultiplier = scoreMultiplier;
         this.offhandOnly = offhandOnly;
+        this.randomTotem = randomTotem;
     }
 
     public String name() {
@@ -38,5 +40,9 @@ public final class Difficulty {
 
     public boolean offhandOnly() {
         return offhandOnly;
+    }
+
+    public boolean randomTotem() {
+        return randomTotem;
     }
 }

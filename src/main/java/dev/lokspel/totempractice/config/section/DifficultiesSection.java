@@ -48,7 +48,8 @@ public class DifficultiesSection {
                 hitInterval,
                 section.getDouble("offhand-hit-interval", hitInterval),
                 section.getDouble("score-multiplier", 1.0D),
-                section.getBoolean("offhand-only", false)
+                section.getBoolean("offhand-only", false),
+                section.getBoolean("random-totem", false)
         );
     }
 }

@@ -5,11 +5,13 @@
 # size: Inventory size (multiple of 9).
 # fill-material: Material used for empty slots.
 # offhand-warning: Warning shown when offhand-only is enabled.
+# random-warning: Warning shown when random-totem is enabled.
 #
 # Placeholders:
 # %interval% - Time between lethal hits in seconds.
 # %multiplier% - Score multiplier.
 # %offhand% - Offhand warning or empty.
+# %random% - Random totem warning or empty.
 # Slot keys must match difficulty names in config.yml.
 # ============================================
 
@@ -19,6 +21,8 @@ difficulty-selection:
   fill-material: gray_stained_glass_pane
   # Line shown only on difficulties with offhand-only enabled (via %offhand%)
   offhand-warning: "<red><bold>⚠ <red>Totem must be in offhand!"
+  # Line shown only on difficulties with random-totem enabled (via %random%)
+  random-warning: "<gold><bold>? <gold>Find the hidden totem!"
   slots:
       # Lethal hit interval: %interval%s | Score multiplier: x%multiplier%
     easy:
@@ -30,6 +34,7 @@ difficulty-selection:
         - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
         - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
+        - "%random%"
         - ""
         - "<gray>(<white>Click to start)"
 
@@ -42,6 +47,7 @@ difficulty-selection:
         - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
         - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
+        - "%random%"
         - ""
         - "<gray>(<white>Click to start)"
 
@@ -54,6 +60,7 @@ difficulty-selection:
         - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
         - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
+        - "%random%"
         - ""
         - "<gray>(<white>Click to start)"
       
@@ -66,5 +73,6 @@ difficulty-selection:
         - "<gray>Lethal interval <dark_gray>» <white>%interval%s"
         - "<gray>Score multiplier <dark_gray>» <green>x%multiplier%"
         - "%offhand%"
+        - "%random%"
         - ""
         - "<gray>(<white>Click to start)"

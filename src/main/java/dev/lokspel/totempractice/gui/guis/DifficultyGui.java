@@ -27,6 +27,7 @@ public final class DifficultyGui extends Gui {
     private final Map<Integer, String> slotToDifficulty;
     private final String fillMaterial;
     private final String offhandWarning;
+    private final String randomWarning;
 
     public DifficultyGui(Rounds rounds, DifficultiesSection difficulties, GuiConfig config) {
         super(GuiType.DIFFICULTY_SELECTION, config.title(), config.size());
@@ -39,6 +40,7 @@ public final class DifficultyGui extends Gui {
         }
         this.fillMaterial = config.fillMaterial();
         this.offhandWarning = config.offhandWarning();
+        this.randomWarning = config.randomWarning();
     }
 
     @Override
@@ -80,11 +82,13 @@ public final class DifficultyGui extends Gui {
 
     private List<String> placeholders(List<String> lore, Difficulty difficulty) {
         String offhand = difficulty.offhandOnly() ? offhandWarning : "";
+        String random = difficulty.randomTotem() ? randomWarning : "";
         return lore.stream()
                 .map(line -> line
                         .replace("%interval%", NumberUtil.format(difficulty.effectiveHitInterval()))
                         .replace("%multiplier%", NumberUtil.format(difficulty.scoreMultiplier()))
-                        .replace("%offhand%", offhand))
+                        .replace("%offhand%", offhand)
+                        .replace("%random%", random))
                 .filter(line -> !line.isBlank())
                 .toList();
     }

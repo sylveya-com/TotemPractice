@@ -77,7 +77,11 @@ public final class Rounds {
         }
 
         PlayerUtil.switchToSurvival(player);
-        InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, difficulty.offhandOnly());
+        if (difficulty.randomTotem()) {
+            InventoryUtil.giveRandomTotem(player.getInventory(), Round.STORAGE_SLOTS);
+        } else {
+            InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, difficulty.offhandOnly());
+        }
 
         Location location = config.backed().location("match");
         if (location != null) {
@@ -88,6 +92,21 @@ public final class Rounds {
         lastCountdown.put(playerId, -1L);
 
         Bukkit.getPluginManager().callEvent(new RoundStartEvent(player));
+    }
+
+    public void hideRandomTotem(Player player, Round round) {
+        if (!round.randomTotem()) {
+            return;
+        }
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!player.isOnline() || player.isDead()) {
+                return;
+            }
+            if (rounds.get(player.getUniqueId()) != round) {
+                return;
+            }
+            InventoryUtil.giveRandomTotem(player.getInventory(), Round.STORAGE_SLOTS);
+        });
     }
 
     public Round remove(Player player) {
