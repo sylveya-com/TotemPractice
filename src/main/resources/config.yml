@@ -78,19 +78,31 @@ hide:
 # ============================================
 #              End of Round Commands
 # ============================================
-# Commands executed by the console after a player
-# finishes a round and has respawned back at the
-# lobby. Use this to hand the player back to a
-# lobby plugin so it can restore the lobby state
+# Commands executed after a player finishes a
+# round and has respawned back at the lobby.
+# Use this to hand the player back to a lobby
+# plugin so it can restore the lobby state
 # (items, scoreboard, damage protection, etc.).
 #
-# Placeholders:
+# Every entry takes:
+#   command: the command to run, prefixed by
+#     [player]  - as the player, like typed in chat
+#     [console] - from the server console
+#     (without a prefix the console runs it)
+#   bypass-permissions: (optional) permission
+#     nodes temporarily granted while this
+#     command runs (the player never becomes op)
+#
+# Placeholders in a command:
 #   %player% - the player's name
 #   %uuid%   - the player's UUID
 #
-# Example for ZonePractice:
+# Example:
 #   on-round-end:
-#     - "practice lobby load"
+#     - command: "[player] practice lobby load"
+#       bypass-permissions:
+#         - "zpp.practice.lobby"
+#     - command: "[console] say Round finished"
 # ============================================
 
 commands:

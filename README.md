@@ -35,7 +35,7 @@ During a round:
 
 When the round ends, the final score is displayed in a title.
 
-Commands listed under `commands.on-round-end` in the config are executed by the console after the player respawns in the lobby. This can be used to hand the player back to a lobby plugin (e.g. `practice lobby load` for ZonePractice).
+Commands listed under `commands.on-round-end` in the config are executed after the player respawns in the lobby. Each entry defines a `command`, optionally prefixed with `[player]` to run it as the player or `[console]` to run it from the console (without a prefix the console runs it), and an optional `bypass-permissions` list of nodes temporarily granted while that command runs (the player never becomes op). This can be used to hand the player back to a lobby plugin (e.g. `[player] practice lobby load` for ZonePractice).
 
 ## » Commands
 
