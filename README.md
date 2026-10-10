@@ -10,8 +10,6 @@ Players select a difficulty from a GUI and start a round at a configured match l
 
 Each successful totem pop increases the player's score. The round continues until the player fails to survive a hit.
 
-Difficulties control the time between hits and the score multiplier, allowing different levels of reaction speed to be practiced.
-
 ## » Difficulties
 
 Each difficulty defines:
@@ -34,8 +32,6 @@ During a round:
 * The current score and round statistics can be accessed through PlaceholderAPI
 
 When the round ends, the final score is displayed in a title.
-
-Commands listed under `commands.on-round-end` in the config are executed after the player respawns in the lobby. Each entry defines a `command`, optionally prefixed with `[player]` to run it as the player or `[console]` to run it from the console (without a prefix the console runs it), and an optional `bypass-permissions` list of nodes temporarily granted while that command runs (the player never becomes op). This can be used to hand the player back to a lobby plugin (e.g. `[player] practice lobby load` for ZonePractice).
 
 ## » Commands
 
