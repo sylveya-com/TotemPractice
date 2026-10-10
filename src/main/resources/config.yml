@@ -78,24 +78,10 @@ hide:
 # ============================================
 #              End of Round Commands
 # ============================================
-# Commands executed after a player finishes a
-# round and has respawned back at the lobby.
-# Use this to hand the player back to a lobby
-# plugin so it can restore the lobby state
-# (items, scoreboard, damage protection, etc.).
-#
-# Every entry takes:
-#   command: the command to run, prefixed by
-#     [player]  - as the player, like typed in chat
-#     [console] - from the server console
-#     (without a prefix the console runs it)
-#   bypass-permissions: (optional) permission
-#     nodes temporarily granted while this
-#     command runs (the player never becomes op)
-#
-# Placeholders in a command:
-#   %player% - the player's name
-#   %uuid%   - the player's UUID
+# Commands run after a player respawns in the
+# lobby. Prefix with [player] to run as the
+# player or [console] for the console (default).
+# Placeholders: %player%, %uuid%.
 #
 # Example:
 #   on-round-end:
