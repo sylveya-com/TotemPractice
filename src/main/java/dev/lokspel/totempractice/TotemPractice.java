@@ -3,9 +3,9 @@ package dev.lokspel.totempractice;
 import dev.lokspel.totempractice.api.TotemPracticeAPI;
 import dev.lokspel.totempractice.command.CommandDispatcher;
 import dev.lokspel.totempractice.command.CommandDispatcher.RegisteredCommand;
+import dev.lokspel.totempractice.command.GuiCommand;
 import dev.lokspel.totempractice.command.ReloadCommand;
 import dev.lokspel.totempractice.command.SetCommand;
-import dev.lokspel.totempractice.command.TotemPracticeCommand;
 import dev.lokspel.totempractice.config.GuiConfig;
 import dev.lokspel.totempractice.config.MainConfig;
 import dev.lokspel.totempractice.game.Rounds;
@@ -72,7 +72,7 @@ public final class TotemPractice extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, rounds::tick, 5L, 1L);
 
         CommandDispatcher dispatcher = new CommandDispatcher(mainConfig, List.of(
-                new RegisteredCommand("gui", new TotemPracticeCommand(this)),
+                new RegisteredCommand("gui", new GuiCommand(this)),
                 new RegisteredCommand("set", new SetCommand(this)),
                 new RegisteredCommand("reload", new ReloadCommand(this))
         ));

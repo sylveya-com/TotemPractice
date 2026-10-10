@@ -7,11 +7,11 @@ import dev.lokspel.totempractice.gui.GuiType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TotemPracticeCommand implements SubCommand {
+public class GuiCommand implements SubCommand {
 
     private final MainConfig config;
 
-    public TotemPracticeCommand(TotemPractice plugin) {
+    public GuiCommand(TotemPractice plugin) {
         this.config = plugin.getMainConfig();
     }
 
