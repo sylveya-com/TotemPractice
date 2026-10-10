@@ -49,9 +49,9 @@ difficulties:
 
   impossible:
     hit-interval: 0.25
-    offhand-hit-interval: 0.25
+    offhand-hit-interval: 1.25
     score-multiplier: 5.0
-    offhand-only: false
+    offhand-only: true
     random-totem: true
 
 
