@@ -4,9 +4,11 @@ import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundEndEvent;
 import dev.lokspel.totempractice.config.BackedConfig;
 import dev.lokspel.totempractice.config.MessagesConfig;
+import dev.lokspel.totempractice.config.section.CommandsSection;
 import dev.lokspel.totempractice.game.Results;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
+import dev.lokspel.totempractice.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,12 +27,14 @@ public final class PlayerDeathListener implements Listener {
     private final RoundManager roundManager;
     private final MessagesConfig messages;
     private final BackedConfig backed;
+    private final CommandsSection commands;
     private final Set<UUID> toLobby = new HashSet<>();
 
     public PlayerDeathListener(TotemPractice plugin) {
         this.roundManager = plugin.getRoundManager();
         this.messages = plugin.getMainConfig().messages();
         this.backed = plugin.getMainConfig().backed();
+        this.commands = plugin.getMainConfig().commands();
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -58,5 +62,7 @@ public final class PlayerDeathListener implements Listener {
         if (lobby != null) {
             event.setRespawnLocation(lobby);
         }
+
+        CommandUtil.run(commands.onRoundEnd(), event.getPlayer());
     }
 }

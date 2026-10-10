@@ -73,3 +73,25 @@ difficulties:
 hide:
   match-players-in-tab: false
   match-players-from-each-other: true
+
+
+# ============================================
+#              End of Round Commands
+# ============================================
+# Commands executed by the console after a player
+# finishes a round and has respawned back at the
+# lobby. Use this to hand the player back to a
+# lobby plugin so it can restore the lobby state
+# (items, scoreboard, damage protection, etc.).
+#
+# Placeholders:
+#   %player% - the player's name
+#   %uuid%   - the player's UUID
+#
+# Example for ZonePractice:
+#   on-round-end:
+#     - "practice lobby load"
+# ============================================
+
+commands:
+  on-round-end: []

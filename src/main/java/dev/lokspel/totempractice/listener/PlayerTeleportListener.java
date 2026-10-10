@@ -2,8 +2,10 @@ package dev.lokspel.totempractice.listener;
 
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.config.BackedConfig;
+import dev.lokspel.totempractice.config.section.CommandsSection;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
+import dev.lokspel.totempractice.util.CommandUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,10 +22,12 @@ public final class PlayerTeleportListener implements Listener {
 
     private final RoundManager roundManager;
     private final BackedConfig backed;
+    private final CommandsSection commands;
 
     public PlayerTeleportListener(TotemPractice plugin) {
         this.roundManager = plugin.getRoundManager();
         this.backed = plugin.getMainConfig().backed();
+        this.commands = plugin.getMainConfig().commands();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -47,5 +51,6 @@ public final class PlayerTeleportListener implements Listener {
         }
 
         roundManager.remove(player);
+        CommandUtil.run(commands.onRoundEnd(), player);
     }
 }

@@ -1,6 +1,7 @@
 package dev.lokspel.totempractice.config;
 
 import dev.lokspel.totempractice.TotemPractice;
+import dev.lokspel.totempractice.config.section.CommandsSection;
 import dev.lokspel.totempractice.config.section.DifficultiesSection;
 import dev.lokspel.totempractice.config.section.HideSection;
 
@@ -9,6 +10,7 @@ public class MainConfig {
     private final TotemPractice plugin;
     private final DifficultiesSection difficulties;
     private final HideSection hide;
+    private final CommandsSection commands;
     private final BackedConfig backed;
     private MessagesConfig messages;
 
@@ -17,6 +19,7 @@ public class MainConfig {
         plugin.saveDefaultConfig();
         this.difficulties = new DifficultiesSection(plugin);
         this.hide = new HideSection(plugin);
+        this.commands = new CommandsSection(plugin);
         this.backed = new BackedConfig(plugin);
         this.messages = new MessagesConfig(plugin);
     }
@@ -33,6 +36,10 @@ public class MainConfig {
 
     public HideSection hide() {
         return hide;
+    }
+
+    public CommandsSection commands() {
+        return commands;
     }
 
     public BackedConfig backed() {
