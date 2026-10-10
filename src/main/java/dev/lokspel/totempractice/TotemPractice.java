@@ -3,6 +3,7 @@ package dev.lokspel.totempractice;
 import dev.lokspel.totempractice.api.TotemPracticeAPI;
 import dev.lokspel.totempractice.command.CommandDispatcher;
 import dev.lokspel.totempractice.command.CommandDispatcher.RegisteredCommand;
+import dev.lokspel.totempractice.command.ReloadCommand;
 import dev.lokspel.totempractice.command.SetCommand;
 import dev.lokspel.totempractice.command.TotemPracticeCommand;
 import dev.lokspel.totempractice.config.GuiConfig;
@@ -72,7 +73,8 @@ public final class TotemPractice extends JavaPlugin {
 
         CommandDispatcher dispatcher = new CommandDispatcher(mainConfig, List.of(
                 new RegisteredCommand("gui", new TotemPracticeCommand(this)),
-                new RegisteredCommand("set", new SetCommand(this))
+                new RegisteredCommand("set", new SetCommand(this)),
+                new RegisteredCommand("reload", new ReloadCommand(this))
         ));
         var command = Objects.requireNonNull(getCommand("totempractice"));
         command.setExecutor(dispatcher);

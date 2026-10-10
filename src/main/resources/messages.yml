@@ -6,9 +6,11 @@
 # Prefix is added to messages using %prefix%.
 prefix: "<gold>[TotemPractice] "
 
-usage: "%prefix%<red>Usage: /totempractice <gui|set>"
+usage: "%prefix%<red>Usage: /totempractice <gui|set|reload>"
 player-only: "<red>Only players can use this command."
 no-permission: "<red>You don't have permission to use this command."
+
+config-reloaded: "%prefix%<green>Configuration reloaded successfully."
 
 already-running: "%prefix%<red>A round is already running."
 cannot-start-dead: "%prefix%<red>You cannot start a round while dead."

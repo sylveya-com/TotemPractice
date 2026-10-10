@@ -37,11 +37,12 @@ When the round ends, the final score is displayed in a title.
 
 ## » Commands
 
-| Command                    | Description                       | Permission          |
-| -------------------------- | --------------------------------- | ------------------- |
-| `/totempractice`           | Open the difficulty selection GUI | `totempractice.use` |
-| `/totempractice set match` | Set the match location            | `totempractice.set` |
-| `/totempractice set lobby` | Set the lobby respawn location    | `totempractice.set` |
+| Command                    | Description                       | Permission            |
+| -------------------------- | --------------------------------- | --------------------- |
+| `/totempractice`           | Open the difficulty selection GUI | `totempractice.use`   |
+| `/totempractice set match` | Set the match location            | `totempractice.set`   |
+| `/totempractice set lobby` | Set the lobby respawn location    | `totempractice.set`   |
+| `/totempractice reload`    | Reload configuration and messages | `totempractice.reload` |
 
 ## » Player Hiding
 
