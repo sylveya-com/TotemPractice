@@ -9,9 +9,9 @@ import dev.lokspel.totempractice.config.GuiConfig;
 import dev.lokspel.totempractice.config.MainConfig;
 import dev.lokspel.totempractice.game.Rounds;
 import dev.lokspel.totempractice.gui.guis.DifficultyGui;
+import dev.lokspel.totempractice.gui.listener.GuiCloseListener;
+import dev.lokspel.totempractice.gui.listener.GuiInteractionListener;
 import dev.lokspel.totempractice.listener.EntityResurrectListener;
-import dev.lokspel.totempractice.listener.GuiCloseListener;
-import dev.lokspel.totempractice.listener.GuiInteractionListener;
 import dev.lokspel.totempractice.listener.PlayerDeathListener;
 import dev.lokspel.totempractice.listener.PlayerDropItemListener;
 import dev.lokspel.totempractice.listener.PlayerPickupListener;
@@ -85,7 +85,7 @@ public final class TotemPractice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDropItemListener(rounds), this);
         getServer().getPluginManager().registerEvents(new PlayerPickupListener(rounds), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(rounds), this);
-        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(rounds, mainConfig.backed()), this);
+        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
 
         new TotemPracticeAPI(this);
 

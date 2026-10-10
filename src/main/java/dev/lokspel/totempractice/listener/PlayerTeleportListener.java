@@ -1,5 +1,6 @@
 package dev.lokspel.totempractice.listener;
 
+import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.config.BackedConfig;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.Rounds;
@@ -20,9 +21,9 @@ public final class PlayerTeleportListener implements Listener {
     private final Rounds rounds;
     private final BackedConfig backed;
 
-    public PlayerTeleportListener(Rounds rounds, BackedConfig backed) {
-        this.rounds = rounds;
-        this.backed = backed;
+    public PlayerTeleportListener(TotemPractice plugin) {
+        this.rounds = plugin.getRounds();
+        this.backed = plugin.getMainConfig().backed();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
