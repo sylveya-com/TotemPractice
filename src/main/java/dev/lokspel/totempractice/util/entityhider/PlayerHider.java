@@ -6,6 +6,7 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
@@ -115,9 +116,6 @@ public class PlayerHider implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getTo() == null) {
-            return;
-        }
 
         if (event.getFrom().getWorld() != event.getTo().getWorld()) {
             refreshLater();
@@ -236,19 +234,31 @@ public class PlayerHider implements Listener {
             return;
         }
 
-        EnumSet<WrapperPlayServerPlayerInfoUpdate.Action> actions = EnumSet.of(
-                WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
-                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED,
-                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LATENCY,
-                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,
-                WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LIST_ORDER
-        );
+        List<TextureProperty> properties = target.getPlayerProfile()
+                .getProperties()
+                .stream()
+                .map(property -> new TextureProperty(
+                        property.getName(),
+                        property.getValue(),
+                        property.getSignature()
+                ))
+                .toList();
+
+        EnumSet<WrapperPlayServerPlayerInfoUpdate.Action> actions =
+                EnumSet.of(
+                        WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
+                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED,
+                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LATENCY,
+                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,
+                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LIST_ORDER
+                );
 
         WrapperPlayServerPlayerInfoUpdate.PlayerInfo info =
                 new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
                         new UserProfile(
                                 target.getUniqueId(),
-                                target.getName()
+                                target.getName(),
+                                properties
                         ),
                         true,
                         target.getPing(),
