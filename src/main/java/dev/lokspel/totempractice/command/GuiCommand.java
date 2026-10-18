@@ -1,24 +1,23 @@
 package dev.lokspel.totempractice.command;
 
 import dev.lokspel.totempractice.TotemPractice;
-import dev.lokspel.totempractice.config.MainConfig;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.gui.Gui;
 import dev.lokspel.totempractice.gui.GuiType;
+import dev.lokspel.totempractice.util.MessageUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class GuiCommand implements SubCommand {
 
-    private final MainConfig config;
-
-    public GuiCommand(TotemPractice plugin) {
-        this.config = plugin.getMainConfig();
+    public GuiCommand(TotemPractice ignored) {
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        var messages = TotemPracticeConfig.messages().getCommands();
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(config.messages().get("player-only"));
+            MessageUtil.send(sender, messages.getPlayerOnly());
             return true;
         }
         Gui.search(GuiType.DIFFICULTY_SELECTION).open(player);

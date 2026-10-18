@@ -1,13 +1,14 @@
 package dev.lokspel.totempractice.gui.guis;
 
-import dev.lokspel.totempractice.config.GuiConfig;
-import dev.lokspel.totempractice.config.section.DifficultiesSection;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
+import dev.lokspel.totempractice.config.gui.DifficultySelectionGui;
+import dev.lokspel.totempractice.config.gui.SlotEntry;
 import dev.lokspel.totempractice.game.Difficulty;
 import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.gui.Gui;
 import dev.lokspel.totempractice.gui.GuiType;
-import dev.lokspel.totempractice.util.ItemBuilder;
 import dev.lokspel.totempractice.util.InventoryUtil;
+import dev.lokspel.totempractice.util.ItemBuilder;
 import dev.lokspel.totempractice.util.NumberUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,32 +16,20 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class DifficultyGui extends Gui {
 
     private final RoundManager roundManager;
-    private final DifficultiesSection difficulties;
-    private final Map<String, GuiConfig.SlotConfig> slots;
-    private final Map<Integer, String> slotToDifficulty;
-    private final String fillMaterial;
-    private final String offhandWarning;
-    private final String randomWarning;
 
-    public DifficultyGui(RoundManager roundManager, DifficultiesSection difficulties, GuiConfig config) {
-        super(GuiType.DIFFICULTY_SELECTION, config.title(), config.size());
+    public DifficultyGui(RoundManager roundManager) {
+        super(
+                GuiType.DIFFICULTY_SELECTION,
+                TotemPracticeConfig.gui().getDifficultySelection().getTitle(),
+                TotemPracticeConfig.gui().getDifficultySelection().getSize()
+        );
         this.roundManager = roundManager;
-        this.difficulties = difficulties;
-        this.slots = config.difficultySlots();
-        this.slotToDifficulty = new HashMap<>();
-        for (Map.Entry<String, GuiConfig.SlotConfig> entry : slots.entrySet()) {
-            slotToDifficulty.put(entry.getValue().slot(), entry.getKey());
-        }
-        this.fillMaterial = config.fillMaterial();
-        this.offhandWarning = config.offhandWarning();
-        this.randomWarning = config.randomWarning();
     }
 
     @Override
@@ -48,11 +37,18 @@ public final class DifficultyGui extends Gui {
         if (event.getClickedInventory() != event.getView().getTopInventory()) {
             return;
         }
-        String name = slotToDifficulty.get(event.getSlot());
+        DifficultySelectionGui gui = TotemPracticeConfig.gui().getDifficultySelection();
+        String name = null;
+        for (Map.Entry<String, SlotEntry> entry : gui.getSlots().entrySet()) {
+            if (entry.getValue().getSlot() == event.getSlot()) {
+                name = entry.getKey();
+                break;
+            }
+        }
         if (name == null) {
             return;
         }
-        Difficulty difficulty = difficulties.get(name);
+        Difficulty difficulty = TotemPracticeConfig.getDifficulty(name);
         if (difficulty == null) {
             return;
         }
@@ -63,26 +59,27 @@ public final class DifficultyGui extends Gui {
 
     @Override
     protected void populate(Inventory inventory) {
-        InventoryUtil.fillAll(inventory, fillMaterial, Material.GRAY_STAINED_GLASS_PANE);
-        slots.forEach((name, slot) -> {
-            Difficulty difficulty = difficulties.get(name);
+        DifficultySelectionGui gui = TotemPracticeConfig.gui().getDifficultySelection();
+        InventoryUtil.fillAll(inventory, gui.getFillMaterial(), Material.GRAY_STAINED_GLASS_PANE);
+        gui.getSlots().forEach((name, slot) -> {
+            Difficulty difficulty = TotemPracticeConfig.getDifficulty(name);
             if (difficulty != null) {
-                inventory.setItem(slot.slot(), icon(difficulty, slot));
+                inventory.setItem(slot.getSlot(), icon(difficulty, slot, gui));
             }
         });
     }
 
-    private ItemStack icon(Difficulty difficulty, GuiConfig.SlotConfig slot) {
-        return new ItemBuilder(Material.matchMaterial(slot.material()), Material.LIME_CONCRETE)
-                .name(slot.name())
-                .lore(placeholders(slot.lore(), difficulty))
-                .glint(slot.glint())
+    private ItemStack icon(Difficulty difficulty, SlotEntry slot, DifficultySelectionGui gui) {
+        return new ItemBuilder(Material.matchMaterial(slot.getMaterial()), Material.LIME_CONCRETE)
+                .name(slot.getName())
+                .lore(placeholders(slot.getLore(), difficulty, gui))
+                .glint(slot.isGlint())
                 .build();
     }
 
-    private List<String> placeholders(List<String> lore, Difficulty difficulty) {
-        String offhand = difficulty.offhandOnly() ? offhandWarning : "";
-        String random = difficulty.randomTotem() ? randomWarning : "";
+    private List<String> placeholders(List<String> lore, Difficulty difficulty, DifficultySelectionGui gui) {
+        String offhand = difficulty.offhandOnly() ? gui.getOffhandWarning() : "";
+        String random = difficulty.randomTotem() ? gui.getRandomWarning() : "";
         return lore.stream()
                 .map(line -> line
                         .replace("%interval%", NumberUtil.format(difficulty.effectiveHitInterval()))

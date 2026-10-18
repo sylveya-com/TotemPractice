@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "9.0.0"
+    alias(libs.plugins.shadow)
 }
 
 group = "dev.lokspel.totempractice"
@@ -8,19 +8,33 @@ version = "1.0.4"
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.helpch.at/releases/")
     maven("https://repo.faststats.dev/releases")
+    maven("https://registry.whereareiam.me/maven/packages")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
-    implementation("dev.faststats.metrics:bukkit:0.30.2")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
-    compileOnly("me.clip:placeholderapi:2.12.3")
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    compileOnly(libs.spigot.api)
+    compileOnly(libs.placeholderapi)
+    compileOnly(libs.packetevents.spigot)
+
+    implementation(libs.faststats.bukkit)
+    implementation(libs.bundles.adventure)
+    implementation(libs.bundles.configura)
+    implementation(libs.bundles.strata)
+
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.spigot.api)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -30,7 +44,17 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.shadowJar {
     exclude("META-INF/versions/*/module-info.class", "module-info.class")
+    relocate("net.kyori", "dev.lokspel.totempractice.thirdparty.kyori")
+    relocate("me.whereareiam.configura", "dev.lokspel.totempractice.thirdparty.configura")
+    relocate("me.whereareiam.strata", "dev.lokspel.totempractice.thirdparty.strata")
+    relocate("com.fasterxml.jackson", "dev.lokspel.totempractice.thirdparty.jackson")
+    relocate("org.yaml.snakeyaml", "dev.lokspel.totempractice.thirdparty.snakeyaml")
+    relocate("dev.faststats", "dev.lokspel.totempractice.thirdparty.faststats")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    filesMatching("META-INF/services/**") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    mergeServiceFiles()
     archiveClassifier.set("")
 }
 

@@ -1,8 +1,7 @@
 package dev.lokspel.totempractice.listener;
 
 import dev.lokspel.totempractice.TotemPractice;
-import dev.lokspel.totempractice.config.BackedConfig;
-import dev.lokspel.totempractice.config.section.CommandsSection;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.util.CommandUtil;
@@ -21,13 +20,9 @@ import java.util.UUID;
 public final class PlayerTeleportListener implements Listener {
 
     private final RoundManager roundManager;
-    private final BackedConfig backed;
-    private final CommandsSection commands;
 
     public PlayerTeleportListener(TotemPractice plugin) {
         this.roundManager = plugin.getRoundManager();
-        this.backed = plugin.getMainConfig().backed();
-        this.commands = plugin.getMainConfig().commands();
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -41,16 +36,16 @@ public final class PlayerTeleportListener implements Listener {
         }
 
         Location to = event.getTo();
-        if (to.getWorld() == null) {
+        if (to == null || to.getWorld() == null) {
             return;
         }
 
-        Location match = backed.location("match");
+        Location match = TotemPracticeConfig.backed().getMatch().toLocation();
         if (match == null || to.getWorld().equals(match.getWorld())) {
             return;
         }
 
         roundManager.remove(player);
-        CommandUtil.run(commands.onRoundEnd(), player);
+        CommandUtil.run(TotemPracticeConfig.settings().getCommands().getOnRoundEnd(), player);
     }
 }

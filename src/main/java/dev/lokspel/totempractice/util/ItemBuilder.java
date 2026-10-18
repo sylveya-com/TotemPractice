@@ -17,11 +17,11 @@ public final class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        return meta(meta -> meta.setDisplayName(ColorAPI.legacy(name)));
+        return meta(meta -> meta.setDisplayName(MessageUtil.format(name)));
     }
 
     public ItemBuilder lore(List<String> lore) {
-        return meta(meta -> meta.setLore(lore.stream().map(ColorAPI::legacy).toList()));
+        return meta(meta -> meta.setLore(lore.stream().map(MessageUtil::format).toList()));
     }
 
     public ItemBuilder glint(boolean glint) {

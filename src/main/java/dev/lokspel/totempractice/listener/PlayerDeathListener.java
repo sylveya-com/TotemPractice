@@ -2,9 +2,7 @@ package dev.lokspel.totempractice.listener;
 
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundEndEvent;
-import dev.lokspel.totempractice.config.BackedConfig;
-import dev.lokspel.totempractice.config.MessagesConfig;
-import dev.lokspel.totempractice.config.section.CommandsSection;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.Results;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
@@ -25,16 +23,10 @@ import java.util.UUID;
 public final class PlayerDeathListener implements Listener {
 
     private final RoundManager roundManager;
-    private final MessagesConfig messages;
-    private final BackedConfig backed;
-    private final CommandsSection commands;
     private final Set<UUID> toLobby = new HashSet<>();
 
     public PlayerDeathListener(TotemPractice plugin) {
         this.roundManager = plugin.getRoundManager();
-        this.messages = plugin.getMainConfig().messages();
-        this.backed = plugin.getMainConfig().backed();
-        this.commands = plugin.getMainConfig().commands();
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -47,7 +39,7 @@ public final class PlayerDeathListener implements Listener {
 
         Round round = roundManager.remove(player);
         if (round != null) {
-            Results.show(player, round, messages);
+            Results.show(player, round);
             toLobby.add(player.getUniqueId());
             Bukkit.getPluginManager().callEvent(new RoundEndEvent(player, round));
         }
@@ -58,11 +50,11 @@ public final class PlayerDeathListener implements Listener {
         if (!toLobby.remove(event.getPlayer().getUniqueId())) {
             return;
         }
-        Location lobby = backed.location("lobby");
+        Location lobby = TotemPracticeConfig.backed().getLobby().toLocation();
         if (lobby != null) {
             event.setRespawnLocation(lobby);
         }
 
-        CommandUtil.run(commands.onRoundEnd(), event.getPlayer());
+        CommandUtil.run(TotemPracticeConfig.settings().getCommands().getOnRoundEnd(), event.getPlayer());
     }
 }

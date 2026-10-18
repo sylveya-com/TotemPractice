@@ -1,7 +1,7 @@
 package dev.lokspel.totempractice.util;
 
 import dev.lokspel.totempractice.TotemPractice;
-import dev.lokspel.totempractice.config.section.CommandsSection;
+import dev.lokspel.totempractice.config.settings.CommandEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -17,15 +17,15 @@ public final class CommandUtil {
     private CommandUtil() {
     }
 
-    public static void run(List<CommandsSection.Entry> entries, Player player) {
-        if (entries.isEmpty()) {
+    public static void run(List<CommandEntry> entries, Player player) {
+        if (entries == null || entries.isEmpty()) {
             return;
         }
         Bukkit.getScheduler().runTask(TotemPractice.getInstance(), () -> {
             if (!player.isOnline()) {
                 return;
             }
-            for (CommandsSection.Entry entry : entries) {
+            for (CommandEntry entry : entries) {
                 String command = entry.command().trim();
                 boolean asPlayer;
 

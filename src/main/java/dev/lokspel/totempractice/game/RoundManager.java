@@ -2,8 +2,9 @@ package dev.lokspel.totempractice.game;
 
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundStartEvent;
-import dev.lokspel.totempractice.config.MainConfig;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.util.InventoryUtil;
+import dev.lokspel.totempractice.util.MessageUtil;
 import dev.lokspel.totempractice.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -51,7 +52,11 @@ public final class RoundManager {
                 long seconds = Math.max(0, (long) Math.ceil((round.nextHitAt() - now) / 1000.0D));
                 if (seconds != lastCountdown.getOrDefault(round.playerId(), -1L)) {
                     lastCountdown.put(round.playerId(), seconds);
-                    PlayerUtil.showActionBar(player, plugin.getMainConfig().messages().get("round-starting", "seconds", String.valueOf(seconds)));
+                    PlayerUtil.showActionBar(player, MessageUtil.format(
+                            TotemPracticeConfig.messages().getGame().getRoundStarting(),
+                            "seconds",
+                            seconds
+                    ));
                 }
             }
 
@@ -63,16 +68,16 @@ public final class RoundManager {
     }
 
     public void start(Player player, Difficulty difficulty) {
-        MainConfig config = plugin.getMainConfig();
+        var messages = TotemPracticeConfig.messages().getGame();
         UUID playerId = player.getUniqueId();
 
         if (isParticipant(player)) {
-            player.sendMessage(config.messages().prefixed("already-running"));
+            MessageUtil.send(player, messages.getAlreadyRunning());
             return;
         }
 
         if (player.isDead()) {
-            player.sendMessage(config.messages().prefixed("cannot-start-dead"));
+            MessageUtil.send(player, messages.getCannotStartDead());
             return;
         }
 
@@ -83,7 +88,7 @@ public final class RoundManager {
             InventoryUtil.fillTotems(player.getInventory(), Round.STORAGE_SLOTS, difficulty.offhandOnly());
         }
 
-        Location location = config.backed().location("match");
+        Location location = TotemPracticeConfig.backed().getMatch().toLocation();
         if (location != null) {
             player.teleport(location);
         }

@@ -1,6 +1,6 @@
 package dev.lokspel.totempractice.gui;
 
-import dev.lokspel.totempractice.util.ColorAPI;
+import dev.lokspel.totempractice.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,7 +22,7 @@ public abstract class Gui {
     private Inventory inventory;
 
     protected Gui(GuiType type, String title, int size) {
-        this.title = ColorAPI.legacy(title);
+        this.title = MessageUtil.format(title);
         this.size = size;
         GUIS.put(type, this);
     }

@@ -1,5 +1,7 @@
 package dev.lokspel.totempractice.game;
 
+import dev.lokspel.totempractice.config.settings.DifficultyEntry;
+
 public final class Difficulty {
 
     private final String name;
@@ -16,6 +18,20 @@ public final class Difficulty {
         this.scoreMultiplier = scoreMultiplier;
         this.offhandOnly = offhandOnly;
         this.randomTotem = randomTotem;
+    }
+
+    public static Difficulty fromEntry(String name, DifficultyEntry entry) {
+        if (entry == null) {
+            return null;
+        }
+        return new Difficulty(
+                name,
+                entry.getHitInterval(),
+                entry.getOffhandHitInterval(),
+                entry.getScoreMultiplier(),
+                entry.isOffhandOnly(),
+                entry.isRandomTotem()
+        );
     }
 
     public String name() {

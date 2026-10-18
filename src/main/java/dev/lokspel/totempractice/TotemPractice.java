@@ -6,8 +6,7 @@ import dev.lokspel.totempractice.command.CommandDispatcher.RegisteredCommand;
 import dev.lokspel.totempractice.command.GuiCommand;
 import dev.lokspel.totempractice.command.ReloadCommand;
 import dev.lokspel.totempractice.command.SetCommand;
-import dev.lokspel.totempractice.config.GuiConfig;
-import dev.lokspel.totempractice.config.MainConfig;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.gui.guis.DifficultyGui;
 import dev.lokspel.totempractice.gui.listener.GuiCloseListener;
@@ -37,7 +36,6 @@ public final class TotemPractice extends JavaPlugin {
     @Getter
     private static TotemPractice instance;
 
-    private MainConfig mainConfig;
     private RoundManager roundManager;
     private PlayerHider playerHider;
 
@@ -59,7 +57,8 @@ public final class TotemPractice extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        mainConfig = new MainConfig(this);
+        TotemPracticeConfig.load(getDataFolder().toPath());
+
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().init();
             playerHider = new PlayerHider(this);
@@ -67,11 +66,11 @@ public final class TotemPractice extends JavaPlugin {
         }
         roundManager = new RoundManager(this);
 
-        new DifficultyGui(roundManager, mainConfig.difficulties(), new GuiConfig(this));
+        new DifficultyGui(roundManager);
 
         getServer().getScheduler().runTaskTimer(this, roundManager::tick, 5L, 1L);
 
-        CommandDispatcher dispatcher = new CommandDispatcher(mainConfig, List.of(
+        CommandDispatcher dispatcher = new CommandDispatcher(List.of(
                 new RegisteredCommand("gui", new GuiCommand(this)),
                 new RegisteredCommand("set", new SetCommand(this)),
                 new RegisteredCommand("reload", new ReloadCommand(this))

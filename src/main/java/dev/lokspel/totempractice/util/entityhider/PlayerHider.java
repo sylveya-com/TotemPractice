@@ -5,16 +5,12 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.protocol.player.TextureProperty;
-import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundEndEvent;
 import dev.lokspel.totempractice.api.event.RoundStartEvent;
-import dev.lokspel.totempractice.config.section.HideSection;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.util.SoftDependUtil;
 import org.bukkit.Bukkit;
@@ -23,11 +19,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,13 +30,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerHider implements Listener {
 
     private final TotemPractice plugin;
-    private final HideSection hide;
-
     private final Map<Integer, UUID> playerEntityIds = new ConcurrentHashMap<>();
 
     public PlayerHider(TotemPractice plugin) {
         this.plugin = plugin;
-        this.hide = plugin.getMainConfig().hide();
 
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().getEventManager().registerListener(
@@ -50,7 +41,7 @@ public class PlayerHider implements Listener {
 
                         @Override
                         public void onPacketSend(@NotNull PacketSendEvent event) {
-                            if (!hide.matchPlayersFromEachOther()) {
+                            if (!TotemPracticeConfig.settings().getHide().isMatchPlayersFromEachOther()) {
                                 return;
                             }
 
@@ -95,29 +86,8 @@ public class PlayerHider implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onQuit(PlayerQuitEvent event) {
-        if (!SoftDependUtil.PACKET_EVENTS_ENABLED) {
-            return;
-        }
-
-        UUID uuid = event.getPlayer().getUniqueId();
-
-        WrapperPlayServerPlayerInfoRemove packet =
-                new WrapperPlayServerPlayerInfoRemove(uuid);
-
-        for (Player viewer : Bukkit.getOnlinePlayers()) {
-            if (viewer.getUniqueId().equals(uuid)) {
-                continue;
-            }
-
-            PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, packet);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(PlayerTeleportEvent event) {
-
-        if (event.getFrom().getWorld() != event.getTo().getWorld()) {
+        if (!event.getFrom().getWorld().equals(event.getTo().getWorld())) {
             refreshLater();
         }
     }
@@ -149,18 +119,14 @@ public class PlayerHider implements Listener {
                     continue;
                 }
 
-                boolean visible = isVisibleTo(viewerRound, target);
-
-                if (visible) {
+                if (isVisibleTo(viewerRound, target)) {
                     showPlayer(viewer, target);
+                    setListed(viewer, target, true);
                 } else {
                     hidePlayer(viewer, target);
-                }
-
-                if (hide.matchPlayersInTab()) {
-                    setListed(viewer, target, visible);
-                } else {
-                    addToTab(viewer, target);
+                    if (TotemPracticeConfig.settings().getHide().isMatchPlayersInTab()) {
+                        setListed(viewer, target, false);
+                    }
                 }
             }
         }
@@ -185,7 +151,7 @@ public class PlayerHider implements Listener {
             return false;
         }
 
-        return !hide.matchPlayersFromEachOther();
+        return !TotemPracticeConfig.settings().getHide().isMatchPlayersFromEachOther();
     }
 
     private Round roundOf(Player player) {
@@ -223,56 +189,5 @@ public class PlayerHider implements Listener {
         PacketEvents.getAPI()
                 .getPlayerManager()
                 .sendPacket(viewer, update);
-    }
-
-    private void addToTab(Player viewer, Player target) {
-        if (!SoftDependUtil.PACKET_EVENTS_ENABLED) {
-            return;
-        }
-
-        if (!viewer.isOnline() || !target.isOnline()) {
-            return;
-        }
-
-        List<TextureProperty> properties = target.getPlayerProfile()
-                .getProperties()
-                .stream()
-                .map(property -> new TextureProperty(
-                        property.getName(),
-                        property.getValue(),
-                        property.getSignature()
-                ))
-                .toList();
-
-        EnumSet<WrapperPlayServerPlayerInfoUpdate.Action> actions =
-                EnumSet.of(
-                        WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
-                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED,
-                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LATENCY,
-                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_GAME_MODE,
-                        WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LIST_ORDER
-                );
-
-        WrapperPlayServerPlayerInfoUpdate.PlayerInfo info =
-                new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
-                        new UserProfile(
-                                target.getUniqueId(),
-                                target.getName(),
-                                properties
-                        ),
-                        true,
-                        target.getPing(),
-                        GameMode.valueOf(target.getGameMode().name()),
-                        null,
-                        null,
-                        target.getPlayerListOrder()
-                );
-
-        WrapperPlayServerPlayerInfoUpdate packet =
-                new WrapperPlayServerPlayerInfoUpdate(actions, info);
-
-        PacketEvents.getAPI()
-                .getPlayerManager()
-                .sendPacket(viewer, packet);
     }
 }

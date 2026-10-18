@@ -1,7 +1,9 @@
 package dev.lokspel.totempractice.command;
 
 import dev.lokspel.totempractice.TotemPractice;
-import dev.lokspel.totempractice.config.MainConfig;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
+import dev.lokspel.totempractice.config.backed.LocationEntry;
+import dev.lokspel.totempractice.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,38 +16,38 @@ import java.util.stream.Stream;
 
 public class SetCommand implements SubCommand, TabCompleter {
 
-    private final MainConfig config;
-
-    public SetCommand(TotemPractice plugin) {
-        this.config = plugin.getMainConfig();
+    public SetCommand(TotemPractice ignored) {
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        var messages = TotemPracticeConfig.messages().getCommands();
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(config.messages().get("player-only"));
+            MessageUtil.send(sender, messages.getPlayerOnly());
             return true;
         }
 
         if (!sender.hasPermission("totempractice.set")) {
-            sender.sendMessage(config.messages().get("no-permission"));
+            MessageUtil.send(sender, messages.getNoPermission());
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(config.messages().prefixed("usage"));
+            MessageUtil.send(sender, messages.getUsage());
             return true;
         }
 
         String target = args[1].toLowerCase(Locale.ROOT);
 
-        if (!target.equals("match") && !target.equals("lobby")) {
-            sender.sendMessage(config.messages().prefixed("usage"));
+        LocationEntry entry = TotemPracticeConfig.backed().get(target);
+        if (entry == null) {
+            MessageUtil.send(sender, messages.getUsage());
             return true;
         }
 
-        config.backed().setLocation(target, player.getLocation());
-        sender.sendMessage(config.messages().prefixed("point-set", "type", target));
+        entry.setFromLocation(player.getLocation());
+        TotemPracticeConfig.saveBacked();
+        MessageUtil.send(sender, messages.getPointSet(), "type", target);
         return true;
     }
 

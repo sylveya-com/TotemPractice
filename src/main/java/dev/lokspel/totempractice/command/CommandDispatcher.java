@@ -1,6 +1,7 @@
 package dev.lokspel.totempractice.command;
 
-import dev.lokspel.totempractice.config.MainConfig;
+import dev.lokspel.totempractice.config.TotemPracticeConfig;
+import dev.lokspel.totempractice.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,10 +18,8 @@ public class CommandDispatcher implements CommandExecutor, TabCompleter {
     private static final String DEFAULT_COMMAND = "gui";
 
     private final Map<String, SubCommand> subCommands = new LinkedHashMap<>();
-    private final MainConfig config;
 
-    public CommandDispatcher(MainConfig config, List<RegisteredCommand> commands) {
-        this.config = config;
+    public CommandDispatcher(List<RegisteredCommand> commands) {
         for (RegisteredCommand cmd : commands) {
             subCommands.put(cmd.name(), cmd.executor());
         }
@@ -34,7 +33,7 @@ public class CommandDispatcher implements CommandExecutor, TabCompleter {
             return sub.execute(sender, args);
         }
 
-        sender.sendMessage(config.messages().prefixed("usage"));
+        MessageUtil.send(sender, TotemPracticeConfig.messages().getCommands().getUsage());
         return true;
     }
 

@@ -18,7 +18,7 @@ public final class PlayerUtil {
     }
 
     public static void showActionBar(Player player, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(message));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
 
     public static void showTitle(Player player, String title, String subtitle) {
