@@ -3,10 +3,12 @@ package dev.lokspel.totempractice.game;
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundStartEvent;
 import dev.lokspel.totempractice.config.TotemPracticeConfig;
+import dev.lokspel.totempractice.game.player.PlayerStateManager;
 import dev.lokspel.totempractice.util.Disableable;
 import dev.lokspel.totempractice.util.InventoryUtil;
 import dev.lokspel.totempractice.util.MessageUtil;
 import dev.lokspel.totempractice.util.PlayerUtil;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,6 +23,8 @@ public final class RoundManager implements Disableable {
 
     private final TotemPractice plugin;
     private final Map<UUID, Round> rounds = new HashMap<>();
+    @Getter
+    private final PlayerStateManager stateManager = new PlayerStateManager();
     private final Map<UUID, Long> lastCountdown = new HashMap<>();
 
     public RoundManager(TotemPractice plugin) {
@@ -82,7 +86,7 @@ public final class RoundManager implements Disableable {
             return;
         }
 
-        PlayerUtil.switchToSurvival(player);
+        stateManager.capture(player);
         if (difficulty.randomTotem()) {
             InventoryUtil.giveRandomTotem(player.getInventory(), Round.STORAGE_SLOTS);
         } else {
@@ -122,6 +126,7 @@ public final class RoundManager implements Disableable {
 
     @Override
     public void disable() {
+        stateManager.restoreAll();
         Location lobby = TotemPracticeConfig.backed().getLobby().toLocation();
         for (Round round : rounds.values()) {
             Player player = Bukkit.getPlayer(round.playerId());

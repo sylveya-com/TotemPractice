@@ -79,7 +79,7 @@ public class TotemPracticeCmd extends Command implements Enableable {
             }
         }
 
-        MessageUtil.send(sender, TotemPracticeConfig.messages().getCommands().getUsage());
+        MessageUtil.send(sender, "<red>Usage: /totempractice <gui|set|reload>");
         return true;
     }
 }

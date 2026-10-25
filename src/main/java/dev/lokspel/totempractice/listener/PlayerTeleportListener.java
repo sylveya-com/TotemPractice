@@ -4,7 +4,6 @@ import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
-import dev.lokspel.totempractice.util.CommandUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,6 +45,6 @@ public final class PlayerTeleportListener implements Listener {
         }
 
         roundManager.remove(player);
-        CommandUtil.run(TotemPracticeConfig.settings().getCommands().getOnRoundEnd(), player);
+        roundManager.getStateManager().restore(player);
     }
 }

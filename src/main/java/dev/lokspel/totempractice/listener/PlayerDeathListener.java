@@ -6,7 +6,6 @@ import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.Results;
 import dev.lokspel.totempractice.game.Round;
 import dev.lokspel.totempractice.game.RoundManager;
-import dev.lokspel.totempractice.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -55,6 +54,6 @@ public final class PlayerDeathListener implements Listener {
             event.setRespawnLocation(lobby);
         }
 
-        CommandUtil.run(TotemPracticeConfig.settings().getCommands().getOnRoundEnd(), event.getPlayer());
+        roundManager.getStateManager().restore(event.getPlayer());
     }
 }

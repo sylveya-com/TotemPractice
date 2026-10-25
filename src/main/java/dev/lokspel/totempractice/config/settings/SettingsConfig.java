@@ -50,10 +50,6 @@ public class SettingsConfig {
   @JsonProperty("hide")
   private HideSettings hide = new HideSettings();
 
-  @Comment("Commands run after a player respawns in the lobby.")
-  @JsonProperty("commands")
-  private CommandsSettings commands = new CommandsSettings();
-
   private static Map<String, DifficultyEntry> defaultDifficulties() {
     Map<String, DifficultyEntry> map = new LinkedHashMap<>();
     map.put("easy", new DifficultyEntry(1.5, 1.5, 1.0, false, false));

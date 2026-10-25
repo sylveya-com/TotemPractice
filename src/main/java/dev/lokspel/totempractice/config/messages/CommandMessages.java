@@ -15,9 +15,6 @@ import lombok.Setter;
 )
 public class CommandMessages {
 
-  @JsonProperty("usage")
-  private String usage = "{prefix}<red>Usage: /totempractice <gui|set|reload>";
-
   @JsonProperty("player-only")
   private String playerOnly = "<red>Only players can use this command.";
 
