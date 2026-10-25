@@ -1,11 +1,7 @@
 package dev.lokspel.totempractice;
 
 import dev.lokspel.totempractice.api.TotemPracticeAPI;
-import dev.lokspel.totempractice.command.CommandDispatcher;
-import dev.lokspel.totempractice.command.CommandDispatcher.RegisteredCommand;
-import dev.lokspel.totempractice.command.GuiCommand;
-import dev.lokspel.totempractice.command.ReloadCommand;
-import dev.lokspel.totempractice.command.SetCommand;
+import dev.lokspel.totempractice.commands.totempractice.TotemPracticeCmd;
 import dev.lokspel.totempractice.config.TotemPracticeConfig;
 import dev.lokspel.totempractice.game.RoundManager;
 import dev.lokspel.totempractice.gui.guis.DifficultyGui;
@@ -17,6 +13,7 @@ import dev.lokspel.totempractice.listener.PlayerDropItemListener;
 import dev.lokspel.totempractice.listener.PlayerPickupListener;
 import dev.lokspel.totempractice.listener.PlayerQuitListener;
 import dev.lokspel.totempractice.listener.PlayerTeleportListener;
+import dev.lokspel.totempractice.util.PluginPermission;
 import dev.lokspel.totempractice.util.SoftDependUtil;
 import dev.lokspel.totempractice.util.entityhider.PlayerHider;
 import dev.lokspel.totempractice.util.placeholderapi.PlayerExpansion;
@@ -26,9 +23,6 @@ import dev.faststats.bukkit.BukkitContext;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.List;
-import java.util.Objects;
 
 @Getter
 public final class TotemPractice extends JavaPlugin {
@@ -59,25 +53,20 @@ public final class TotemPractice extends JavaPlugin {
 
         TotemPracticeConfig.load(getDataFolder().toPath());
 
+        roundManager = new RoundManager(this);
+
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().init();
             playerHider = new PlayerHider(this);
             getServer().getPluginManager().registerEvents(playerHider, this);
         }
-        roundManager = new RoundManager(this);
 
         new DifficultyGui(roundManager);
 
         getServer().getScheduler().runTaskTimer(this, roundManager::tick, 5L, 1L);
 
-        CommandDispatcher dispatcher = new CommandDispatcher(List.of(
-                new RegisteredCommand("gui", new GuiCommand(this)),
-                new RegisteredCommand("set", new SetCommand(this)),
-                new RegisteredCommand("reload", new ReloadCommand(this))
-        ));
-        var command = Objects.requireNonNull(getCommand("totempractice"));
-        command.setExecutor(dispatcher);
-        command.setTabCompleter(dispatcher);
+        PluginPermission.registerAll();
+        new TotemPracticeCmd().enable();
 
         getServer().getPluginManager().registerEvents(new GuiInteractionListener(), this);
         getServer().getPluginManager().registerEvents(new GuiCloseListener(), this);
@@ -100,7 +89,11 @@ public final class TotemPractice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PluginPermission.unregisterAll();
         fastStatsContext.shutdown();
+        if (roundManager != null) {
+            roundManager.disable();
+        }
         if (SoftDependUtil.PACKET_EVENTS_ENABLED) {
             PacketEvents.getAPI().terminate();
         }

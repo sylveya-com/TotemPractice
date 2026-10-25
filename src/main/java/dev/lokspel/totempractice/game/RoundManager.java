@@ -3,6 +3,7 @@ package dev.lokspel.totempractice.game;
 import dev.lokspel.totempractice.TotemPractice;
 import dev.lokspel.totempractice.api.event.RoundStartEvent;
 import dev.lokspel.totempractice.config.TotemPracticeConfig;
+import dev.lokspel.totempractice.util.Disableable;
 import dev.lokspel.totempractice.util.InventoryUtil;
 import dev.lokspel.totempractice.util.MessageUtil;
 import dev.lokspel.totempractice.util.PlayerUtil;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public final class RoundManager {
+public final class RoundManager implements Disableable {
 
     public static final double HIT_DAMAGE = 1000.0D;
 
@@ -117,5 +118,18 @@ public final class RoundManager {
     public Round remove(Player player) {
         lastCountdown.remove(player.getUniqueId());
         return rounds.remove(player.getUniqueId());
+    }
+
+    @Override
+    public void disable() {
+        Location lobby = TotemPracticeConfig.backed().getLobby().toLocation();
+        for (Round round : rounds.values()) {
+            Player player = Bukkit.getPlayer(round.playerId());
+            if (player != null && player.isOnline() && lobby != null) {
+                player.teleport(lobby);
+            }
+        }
+        rounds.clear();
+        lastCountdown.clear();
     }
 }
