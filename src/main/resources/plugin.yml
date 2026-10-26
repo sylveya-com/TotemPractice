@@ -10,17 +10,3 @@ commands:
   totempractice:
     description: Open the difficulty selection GUI
     usage: /<command> [gui|set|reload]
-
-permissions:
-  totempractice.use:
-    description: Allows using the TotemPractice command
-    default: true
-  totempractice.reload:
-    description: Reload plugin configuration
-    default: op
-  totempractice.set.lobby:
-    description: Allows setting lobby teleport point
-    default: op
-  totempractice.set.match:
-    description: Allows setting match teleport point
-    default: op
