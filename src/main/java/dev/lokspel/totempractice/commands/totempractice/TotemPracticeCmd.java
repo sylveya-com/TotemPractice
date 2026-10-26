@@ -53,7 +53,10 @@ public class TotemPracticeCmd extends Command implements Enableable {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws CommandException, IllegalArgumentException {
         if (args.length == 1) {
-            return tabCompletes;
+            String current = args[0].toLowerCase();
+            return tabCompletes.stream()
+                    .filter(s -> s.toLowerCase().startsWith(current))
+                    .collect(Collectors.toList());
         }
 
         if (args.length >= 2) {

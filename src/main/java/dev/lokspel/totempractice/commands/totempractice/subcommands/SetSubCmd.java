@@ -7,10 +7,8 @@ import dev.lokspel.totempractice.commands.totempractice.subcommands.set.SetMatch
 import dev.lokspel.totempractice.util.MessageUtil;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +34,10 @@ public class SetSubCmd implements SubCommand {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws CommandException, IllegalArgumentException {
         if (args.length == 2) {
-            return StringUtil.copyPartialMatches(args[1], tabCompletes, new ArrayList<>());
+            String current = args[1].toLowerCase();
+            return tabCompletes.stream()
+                    .filter(s -> s.toLowerCase().startsWith(current))
+                    .collect(Collectors.toList());
         }
 
         if (args.length >= 3) {
